@@ -1,7 +1,6 @@
 # Brain Tumor MRI Platform – Project README
 
-A web-based, privacy-preserving decision-support tool for automated brain tumor detection and segmentation on MRI using state-of-the-art deep learning, with an accessible interface built on React and Next.js, and a containerized backend for clinical deployment. [arxiv
-
+A web-based, privacy-preserving decision-support tool for automated brain tumor detection and segmentation on MRI using state-of-the-art deep learning, with an accessible interface built on React and Next.js, and a containerized backend for clinical deployment. 
 ***
 
 ## Table of Contents
@@ -528,4 +527,5 @@ Even though not all are MRI-specific, they provide the foundation your non-coder
 - “Deploying PyTorch Model as a Serverless Service” – shows building Docker images and deploying them to serverless runtimes like AWS Lambda. [serverless](https://www.serverless.com/blog/deploying-pytorch-model-as-a-serverless-service)
 
 This README is intended to be your project’s living **roadmap**; as you implement each step, update it with your actual scripts, dataset versions, and results so future collaborators (even non-coders) can reproduce the entire pipeline.
+
 
