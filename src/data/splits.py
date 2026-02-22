@@ -100,6 +100,32 @@ def _load_splits(
     val_samples = [id_to_sample[pid] for pid in val_ids if pid in id_to_sample]
     test_samples = [id_to_sample[pid] for pid in test_ids if pid in id_to_sample]
 
+    # If filtering left val or test empty (e.g. dev mode with few samples),
+    # re-split the available samples so every set gets at least 1 sample.
+    if len(samples) >= 3 and (len(val_samples) == 0 or len(test_samples) == 0):
+        print("[Splits] Subset too small for saved split — re-splitting available samples")
+        ratios = split_data.get("ratios", [0.7, 0.15, 0.15])
+        seed = split_data.get("seed", 42)
+        patient_ids = sorted(id_to_sample.keys())
+
+        val_test_ratio = ratios[1] + ratios[2]
+        from sklearn.model_selection import train_test_split
+
+        train_ids_new, val_test_ids = train_test_split(
+            patient_ids, test_size=max(val_test_ratio, 2 / len(patient_ids)), random_state=seed
+        )
+        if len(val_test_ids) >= 2:
+            relative_test = ratios[2] / (ratios[1] + ratios[2])
+            val_ids_new, test_ids_new = train_test_split(
+                val_test_ids, test_size=max(relative_test, 1 / len(val_test_ids)), random_state=seed
+            )
+        else:
+            val_ids_new, test_ids_new = val_test_ids, []
+
+        train_samples = [id_to_sample[pid] for pid in train_ids_new]
+        val_samples = [id_to_sample[pid] for pid in val_ids_new]
+        test_samples = [id_to_sample[pid] for pid in test_ids_new]
+
     print(f"[Splits] Loaded split: train={len(train_samples)}, val={len(val_samples)}, test={len(test_samples)}")
 
     return train_samples, val_samples, test_samples

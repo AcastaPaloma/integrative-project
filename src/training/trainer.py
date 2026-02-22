@@ -13,6 +13,7 @@ from torch.cuda.amp import GradScaler, autocast
 from torch.utils.data import DataLoader
 
 from monai.data import CacheDataset, list_data_collate, decollate_batch
+from monai.inferers import sliding_window_inference
 from monai.metrics import DiceMetric
 from monai.transforms import Activations, AsDiscrete, Compose
 
@@ -58,6 +59,11 @@ class Trainer:
 
         # Post-processing for predictions
         self.post_pred = Compose([Activations(sigmoid=True), AsDiscrete(threshold=0.5)])
+
+        # Sliding window inference roi size (same as training patch size)
+        self.val_roi_size = cfg["preprocessing"]["patch_size"]
+        self.sw_batch_size = cfg["training"].get("sw_batch_size", 4)
+        self.sw_overlap = cfg["training"].get("sw_overlap", 0.5)
 
         # Early stopping
         es_cfg = cfg["training"].get("early_stopping", {})
@@ -158,7 +164,7 @@ class Trainer:
 
             self.optimizer.zero_grad()
 
-            with autocast(device_type="cuda", enabled=self.use_amp):
+            with autocast(enabled=self.use_amp):
                 outputs = self.model(inputs)
                 loss = self.loss_fn(outputs, labels)
 
@@ -177,12 +183,22 @@ class Trainer:
         self.model.eval()
         self.dice_metric.reset()
 
+        if len(self.val_loader) == 0:
+            num_classes = self.cfg["model"].get("out_channels", 3)
+            return [0.0] * num_classes, 0.0
+
         for batch_idx, batch in enumerate(self.val_loader):
             inputs = batch["image"].to(self.device)
             labels = batch["label"].to(self.device)
 
-            with autocast(device_type="cuda", enabled=self.use_amp):
-                outputs = self.model(inputs)
+            with autocast(enabled=self.use_amp):
+                outputs = sliding_window_inference(
+                    inputs,
+                    roi_size=self.val_roi_size,
+                    sw_batch_size=self.sw_batch_size,
+                    predictor=self.model,
+                    overlap=self.sw_overlap,
+                )
 
             # Post-process: sigmoid → threshold
             preds = [self.post_pred(o) for o in decollate_batch(outputs)]
@@ -196,7 +212,13 @@ class Trainer:
 
         # Aggregate metrics
         dice_per_class = self.dice_metric.aggregate()
-        dice_per_class = [d.item() for d in dice_per_class]
+        # Flatten to 1-D and convert to Python floats
+        dice_per_class = dice_per_class.flatten().tolist()
+        # Ensure exactly 3 class scores (WT, TC, ET)
+        num_expected = 3
+        while len(dice_per_class) < num_expected:
+            dice_per_class.append(0.0)
+        dice_per_class = dice_per_class[:num_expected]
         mean_dice = sum(dice_per_class) / len(dice_per_class)
 
         return dice_per_class, mean_dice
@@ -205,8 +227,9 @@ class Trainer:
         """Log a mid-training segmentation overlay to WandB."""
         try:
             import matplotlib
-            matplotlib.use("Agg")
             import matplotlib.pyplot as plt
+            original_backend = matplotlib.get_backend()
+            matplotlib.use("Agg")
             import numpy as np
 
             # Get center slice of the first modality (FLAIR)
@@ -248,6 +271,7 @@ class Trainer:
             log_image("val/segmentation_overlay", fig,
                        caption=f"Epoch {epoch+1}", step=epoch)
             plt.close(fig)
+            matplotlib.use(original_backend)
         except Exception as e:
             print_log(f"Failed to log visualization: {e}", level="WARN")
 
