@@ -1,0 +1,91 @@
+# ============================================================
+# Default configuration — shared across dev and full training
+# ============================================================
+
+project_name: "brain-tumor-seg"
+
+seed: 42
+
+# --- Paths ---
+paths:
+  data_root: "data/raw"
+  splits_dir: "data/splits"
+  checkpoint_dir: "checkpoints"
+  output_dir: "outputs"
+  predictions_dir: "outputs/predictions"
+  visualizations_dir: "outputs/visualizations"
+
+# --- Data ---
+data:
+  modalities: ["flair", "t1", "t1ce", "t2"]
+  num_classes: 3  # WT, TC, ET
+  split_ratios: [0.70, 0.15, 0.15]  # train / val / test
+  max_samples: null  # null = use all available
+
+# --- Preprocessing ---
+preprocessing:
+  orientation: "RAS"
+  spacing: [1.0, 1.0, 1.0]
+  patch_size: [128, 128, 128]
+  num_samples_per_volume: 2  # patches per volume per epoch
+  intensity_norm: "nonzero"  # normalize nonzero voxels
+
+# --- Augmentation (training only) ---
+augmentation:
+  random_flip_prob: 0.5
+  random_rotate90_prob: 0.5
+  intensity_shift_offset: 0.1
+  intensity_scale_range: [0.9, 1.1]
+
+# --- Model ---
+model:
+  architecture: "UNet"
+  in_channels: 4     # flair, t1, t1ce, t2
+  out_channels: 3    # WT, TC, ET
+  channels: [32, 64, 128, 256]
+  strides: [2, 2, 2]
+  num_res_units: 2
+  dropout: 0.2
+  gradient_checkpointing: false
+
+# --- Training ---
+training:
+  epochs: 300
+  batch_size: 1
+  num_workers: 2
+  optimizer:
+    name: "AdamW"
+    lr: 1.0e-4
+    weight_decay: 1.0e-5
+  scheduler:
+    name: "CosineAnnealingWarmRestarts"
+    T_0: 50
+    T_mult: 2
+    eta_min: 1.0e-7
+  loss:
+    name: "DiceCE"
+    lambda_dice: 1.0
+    lambda_ce: 1.0
+  mixed_precision: true
+  early_stopping:
+    enabled: true
+    patience: 50
+    min_delta: 0.001
+
+# --- Inference ---
+inference:
+  sw_batch_size: 2
+  overlap: 0.5
+  mode: "gaussian"
+
+# --- Evaluation ---
+evaluation:
+  num_visualization_cases: 5
+  metrics: ["dice", "hausdorff95", "precision", "recall"]
+
+# --- Logging ---
+logging:
+  use_wandb: true
+  wandb_mode: "online"  # "online", "offline", "disabled"
+  log_images_every_n_epochs: 10
+  console_log_interval: 1

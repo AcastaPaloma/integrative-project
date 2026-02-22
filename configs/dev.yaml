@@ -1,0 +1,31 @@
+# ============================================================
+# Dev mode — fast iteration on GTX 1080 (overrides default)
+# ============================================================
+
+data:
+  max_samples: 5
+
+preprocessing:
+  patch_size: [64, 64, 64]
+  num_samples_per_volume: 1
+
+model:
+  channels: [16, 32, 64, 128]
+  gradient_checkpointing: false
+
+training:
+  epochs: 5
+  num_workers: 0  # simpler debugging
+  early_stopping:
+    enabled: false
+
+inference:
+  sw_batch_size: 1
+
+evaluation:
+  num_visualization_cases: 2
+
+logging:
+  use_wandb: false
+  wandb_mode: "disabled"
+  log_images_every_n_epochs: 1

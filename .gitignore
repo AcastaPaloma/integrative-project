@@ -1,1 +1,28 @@
-/venv
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+/venv/
+.env
+
+# Data (too large for git)
+/data/raw/
+/data/splits/
+
+# Training outputs
+/checkpoints/
+/outputs/
+/wandb/
+
+# Models (generated)
+/models/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

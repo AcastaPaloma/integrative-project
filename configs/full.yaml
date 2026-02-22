@@ -1,0 +1,18 @@
+# ============================================================
+# Full training — real training run (overrides default)
+# ============================================================
+
+model:
+  gradient_checkpointing: true
+
+training:
+  epochs: 300
+  num_workers: 4
+  early_stopping:
+    enabled: true
+    patience: 50
+
+logging:
+  use_wandb: true
+  wandb_mode: "online"
+  log_images_every_n_epochs: 10
