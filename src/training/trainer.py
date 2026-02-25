@@ -89,7 +89,7 @@ class Trainer:
         print_log(f"  Device: {self.device}")
 
         history = {"train_loss": [], "val_dice_mean": [], "val_dice_wt": [],
-                    "val_dice_tc": [], "val_dice_et": []}
+                    "val_dice_tc": [], "val_dice_et": [], "val_accuracy": []}
 
         for epoch in range(self.start_epoch, total_epochs):
             epoch_start = time.time()
@@ -99,11 +99,12 @@ class Trainer:
             history["train_loss"].append(train_loss)
 
             # --- Validation epoch ---
-            val_dice_per_class, val_dice_mean = self._validate_epoch(epoch)
+            val_dice_per_class, val_dice_mean, val_accuracy = self._validate_epoch(epoch)
             history["val_dice_mean"].append(val_dice_mean)
             history["val_dice_wt"].append(val_dice_per_class[0])
             history["val_dice_tc"].append(val_dice_per_class[1])
             history["val_dice_et"].append(val_dice_per_class[2])
+            history["val_accuracy"].append(val_accuracy)
 
             # --- Step scheduler ---
             if self.scheduler is not None:
@@ -118,6 +119,7 @@ class Trainer:
                 f"Loss: {train_loss:.4f} | "
                 f"Dice: WT={val_dice_per_class[0]:.4f} TC={val_dice_per_class[1]:.4f} "
                 f"ET={val_dice_per_class[2]:.4f} Mean={val_dice_mean:.4f} | "
+                f"Acc: {val_accuracy:.4f} | "
                 f"LR: {current_lr:.2e} | "
                 f"Time: {elapsed:.1f}s"
             )
@@ -129,6 +131,7 @@ class Trainer:
                 "val/dice_wt": val_dice_per_class[0],
                 "val/dice_tc": val_dice_per_class[1],
                 "val/dice_et": val_dice_per_class[2],
+                "val/accuracy": val_accuracy,
                 "train/lr": current_lr,
                 "train/epoch_time_s": elapsed,
             }, step=epoch)
@@ -179,13 +182,16 @@ class Trainer:
 
     @torch.no_grad()
     def _validate_epoch(self, epoch: int) -> tuple:
-        """Single validation epoch. Returns (dice_per_class, mean_dice)."""
+        """Single validation epoch. Returns (dice_per_class, mean_dice, accuracy)."""
         self.model.eval()
         self.dice_metric.reset()
 
         if len(self.val_loader) == 0:
             num_classes = self.cfg["model"].get("out_channels", 3)
-            return [0.0] * num_classes, 0.0
+            return [0.0] * num_classes, 0.0, 0.0
+
+        total_correct = 0
+        total_voxels = 0
 
         for batch_idx, batch in enumerate(self.val_loader):
             inputs = batch["image"].to(self.device)
@@ -206,6 +212,11 @@ class Trainer:
 
             self.dice_metric(y_pred=preds, y=labels_list)
 
+            # Voxel-wise accuracy (per-channel match, averaged across channels)
+            for p, l in zip(preds, labels_list):
+                total_correct += (p == l).sum().item()
+                total_voxels += l.numel()
+
             # Log sample visualizations periodically
             if batch_idx == 0 and (epoch + 1) % self.log_images_every == 0:
                 self._log_sample_visualization(inputs[0], labels[0], preds[0], epoch)
@@ -220,8 +231,9 @@ class Trainer:
             dice_per_class.append(0.0)
         dice_per_class = dice_per_class[:num_expected]
         mean_dice = sum(dice_per_class) / len(dice_per_class)
+        accuracy = total_correct / max(total_voxels, 1)
 
-        return dice_per_class, mean_dice
+        return dice_per_class, mean_dice, accuracy
 
     def _log_sample_visualization(self, image, label, pred, epoch):
         """Log a mid-training segmentation overlay to WandB."""
