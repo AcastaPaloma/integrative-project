@@ -39,7 +39,7 @@ def discover_brats_samples(data_root: str, max_samples: Optional[int] = None) ->
         sample = {"patient_id": patient_id}
 
         # Find NIfTI files for each modality
-        nii_files = list(patient_dir.glob("*.nii")) + list(patient_dir.glob("*.nii.gz"))
+        nii_files = list(patient_dir.glob("*.nii")) + list(patient_dir.glob("*.nii.gz")) + list(patient_dir.glob("*.mha"))
 
         for modality in ["flair", "t1ce", "t1", "t2", "seg"]:
             matched = None
@@ -77,17 +77,48 @@ def discover_brats_samples(data_root: str, max_samples: Optional[int] = None) ->
     return samples
 
 
-def get_monai_file_list(samples: List[Dict[str, str]]) -> List[Dict[str, str]]:
+def get_monai_file_list(
+    samples: List[Dict[str, str]],
+    modalities: Optional[List[str]] = None,
+    zero_pad_to: Optional[int] = None,
+) -> List[Dict[str, str]]:
     """
     Convert sample dicts to MONAI-compatible format.
 
-    Returns list of dicts with keys: "image" (list of 4 paths) and "label" (1 path)
+    Args:
+        samples: List of sample dicts from discovery
+        modalities: Which modalities to include (default: all 4).
+                    E.g. ["flair", "t2"] for a 2-channel model.
+        zero_pad_to: If set, pad the image list to this many channels
+                     using None placeholders (handled by transforms).
+                     Used for cross-modality inference: train on 4ch,
+                     test with subset by zeroing missing channels.
+
+    Returns:
+        List of dicts with keys: "image" (list of paths or None),
+        "label" (1 path), "patient_id", "modalities"
     """
+    all_modalities = ["flair", "t1", "t1ce", "t2"]
+    if modalities is None:
+        modalities = all_modalities
+
     file_list = []
     for s in samples:
+        if zero_pad_to is not None:
+            # Build full-length image list, None for missing modalities
+            image_paths = []
+            for mod in all_modalities:
+                if mod in modalities:
+                    image_paths.append(s[mod])
+                else:
+                    image_paths.append(None)  # will be zero-padded by transform
+        else:
+            image_paths = [s[mod] for mod in modalities]
+
         file_list.append({
-            "image": [s["flair"], s["t1"], s["t1ce"], s["t2"]],
+            "image": image_paths,
             "label": s["seg"],
             "patient_id": s["patient_id"],
+            "modalities": modalities,
         })
     return file_list

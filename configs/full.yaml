@@ -1,13 +1,21 @@
 # ============================================================
 # Full training — real training run (overrides default)
+# Tuned for GTX 1080 (8 GB VRAM) safety
 # ============================================================
 
+preprocessing:
+  patch_size: [96, 96, 96]
+  num_samples_per_volume: 2
+
 model:
+  channels: [24, 48, 96, 192]
   gradient_checkpointing: true
 
 training:
   epochs: 300
-  num_workers: 4
+  num_workers: 2
+  sw_batch_size: 1
+  sw_overlap: 0.25
   early_stopping:
     enabled: true
     patience: 50

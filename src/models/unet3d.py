@@ -10,16 +10,24 @@ from monai.networks.layers import Norm
 
 def get_model(cfg: dict) -> nn.Module:
     """
-    Build a 3D U-Net model from configuration.
+    Build a segmentation model from configuration.
+
+    Dispatches to MONAI UNet or plain CNN3D based on cfg["model"]["architecture"].
 
     Args:
         cfg: Full config dict
 
     Returns:
-        3D U-Net model ready for training
+        Model ready for training
     """
     model_cfg = cfg["model"]
+    architecture = model_cfg.get("architecture", "UNet")
 
+    if architecture == "CNN":
+        from src.models.cnn3d import get_cnn_model
+        return get_cnn_model(cfg)
+
+    # Default: MONAI U-Net
     model = UNet(
         spatial_dims=3,
         in_channels=model_cfg["in_channels"],

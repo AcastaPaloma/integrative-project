@@ -97,7 +97,7 @@ def get_train_transforms(cfg: dict) -> T.Compose:
 
         T.RandScaleIntensityd(
             keys="image",
-            factors=aug["intensity_scale_range"][1] - 1.0,
+            factors=(aug["intensity_scale_range"][0] - 1.0, aug["intensity_scale_range"][1] - 1.0),
             prob=0.5,
         ),
     ])

@@ -1,0 +1,101 @@
+# ============================================================
+# Experiment Matrix — Multi-modality training configurations
+# ============================================================
+# Each experiment defines:
+#   model: architecture ("UNet" or "CNN")
+#   modalities: which MRI modalities to use as input channels
+#   description: human-readable label
+#
+# Cross-modality tests define inference with different modality
+# subsets using a model trained on a different set (via zero-padding).
+# ============================================================
+
+experiments:
+  # --- Primary models ---
+  unet_4ch:
+    model: "UNet"
+    modalities: ["flair", "t1", "t1ce", "t2"]
+    description: "Full 4-channel U-Net"
+
+  cnn_4ch:
+    model: "CNN"
+    modalities: ["flair", "t1", "t1ce", "t2"]
+    description: "Full 4-channel CNN baseline (no skip connections)"
+
+  # --- Single-modality specialists ---
+  unet_flair:
+    model: "UNet"
+    modalities: ["flair"]
+    description: "FLAIR-only specialist"
+
+  unet_t1:
+    model: "UNet"
+    modalities: ["t1"]
+    description: "T1-only specialist"
+
+  unet_t1ce:
+    model: "UNet"
+    modalities: ["t1ce"]
+    description: "T1CE-only specialist"
+
+  unet_t2:
+    model: "UNet"
+    modalities: ["t2"]
+    description: "T2-only specialist"
+
+  # --- Mixed modality models ---
+  unet_flair_t2:
+    model: "UNet"
+    modalities: ["flair", "t2"]
+    description: "FLAIR + T2 mixed model"
+
+  unet_t1_t1ce:
+    model: "UNet"
+    modalities: ["t1", "t1ce"]
+    description: "T1 + T1CE mixed model"
+
+  unet_flair_t1ce:
+    model: "UNet"
+    modalities: ["flair", "t1ce"]
+    description: "FLAIR + T1CE mixed model"
+
+  unet_3ch_no_t1:
+    model: "UNet"
+    modalities: ["flair", "t1ce", "t2"]
+    description: "3-channel (no T1)"
+
+
+# Cross-modality portability tests:
+# Train on full 4ch, test with subsets (missing channels → zero)
+cross_modality_tests:
+  - train_experiment: "unet_4ch"
+    test_modalities: ["flair"]
+    description: "4ch model → FLAIR only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["t1"]
+    description: "4ch model → T1 only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["t1ce"]
+    description: "4ch model → T1CE only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["t2"]
+    description: "4ch model → T2 only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["flair", "t2"]
+    description: "4ch model → FLAIR+T2 only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["t1", "t1ce"]
+    description: "4ch model → T1+T1CE only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["flair", "t1ce"]
+    description: "4ch model → FLAIR+T1CE only"
+
+  - train_experiment: "unet_4ch"
+    test_modalities: ["flair", "t1ce", "t2"]
+    description: "4ch model → 3ch (no T1)"

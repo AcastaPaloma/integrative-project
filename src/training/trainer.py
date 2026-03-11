@@ -9,7 +9,7 @@ from typing import Optional
 
 import torch
 import torch.nn as nn
-from torch.cuda.amp import GradScaler, autocast
+from torch.amp import GradScaler, autocast
 from torch.utils.data import DataLoader
 
 from monai.data import CacheDataset, list_data_collate, decollate_batch
@@ -48,7 +48,7 @@ class Trainer:
 
         # Mixed precision
         self.use_amp = cfg["training"].get("mixed_precision", True)
-        self.scaler = GradScaler(enabled=self.use_amp)
+        self.scaler = GradScaler("cuda", enabled=self.use_amp)
 
         # Checkpointing
         self.checkpoint_dir = Path(cfg["paths"]["checkpoint_dir"])
@@ -167,7 +167,7 @@ class Trainer:
 
             self.optimizer.zero_grad()
 
-            with autocast(enabled=self.use_amp):
+            with autocast("cuda", enabled=self.use_amp):
                 outputs = self.model(inputs)
                 loss = self.loss_fn(outputs, labels)
 
@@ -197,14 +197,13 @@ class Trainer:
             inputs = batch["image"].to(self.device)
             labels = batch["label"].to(self.device)
 
-            with autocast(enabled=self.use_amp):
-                outputs = sliding_window_inference(
-                    inputs,
-                    roi_size=self.val_roi_size,
-                    sw_batch_size=self.sw_batch_size,
-                    predictor=self.model,
-                    overlap=self.sw_overlap,
-                )
+            outputs = sliding_window_inference(
+                inputs,
+                roi_size=self.val_roi_size,
+                sw_batch_size=self.sw_batch_size,
+                predictor=self.model,
+                overlap=self.sw_overlap,
+            )
 
             # Post-process: sigmoid → threshold
             preds = [self.post_pred(o) for o in decollate_batch(outputs)]

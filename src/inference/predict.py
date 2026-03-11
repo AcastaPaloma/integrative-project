@@ -91,7 +91,7 @@ def run_inference(
         image = data["image"].unsqueeze(0).to(device)  # (1, C, D, H, W)
         label = data["label"]  # (3, D, H, W) — ground truth
 
-        with torch.no_grad(), torch.cuda.amp.autocast(enabled=cfg["training"].get("mixed_precision", True)):
+        with torch.no_grad(), torch.amp.autocast("cuda", enabled=cfg["training"].get("mixed_precision", True)):
             output = inferer(image, model)  # (1, 3, D, H, W)
 
         # Post-process
