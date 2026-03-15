@@ -13,8 +13,8 @@ model:
   - 2
   - 2
   - 2
-  dropout: 0.35000000000000003
+  dropout: 0.2
 training:
   optimizer:
-    lr: 0.0016807774772943217
-    weight_decay: 8.134646270703351e-05
+    lr: 0.0024824855060276534
+    weight_decay: 2.419435677915817e-06
