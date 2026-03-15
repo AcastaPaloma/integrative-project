@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import PersistentDataset, DataLoader, list_data_collate
+from monai.data import Dataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -117,21 +117,9 @@ def main():
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
-    # Setup persistent cache directory
-    persistent_cache_dir = Path(cfg["paths"]["data_root"]) / "persistent_cache"
-    persistent_cache_dir.mkdir(parents=True, exist_ok=True)
-
-    # Datasets
-    train_ds = PersistentDataset(
-        data=train_files,
-        transform=train_transforms,
-        cache_dir=str(persistent_cache_dir),
-    )
-    val_ds = PersistentDataset(
-        data=val_files,
-        transform=val_transforms,
-        cache_dir=str(persistent_cache_dir),
-    )
+    # Datasets — plain Dataset: no disk bloat, no Windows multiprocessing issues
+    train_ds = Dataset(data=train_files, transform=train_transforms)
+    val_ds = Dataset(data=val_files, transform=val_transforms)
 
     # DataLoaders
     train_loader = DataLoader(
