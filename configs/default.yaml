@@ -8,7 +8,7 @@ seed: 42
 
 # --- Paths ---
 paths:
-  data_root: "data/raw"
+  data_root: "data/MICCAI_BraTS2020_TrainingData"
   splits_dir: "data/splits"
   checkpoint_dir: "checkpoints"
   output_dir: "outputs"

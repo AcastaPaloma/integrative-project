@@ -479,6 +479,7 @@ Working style:
 
 - Define phases (Research → Baselines → Selection → Full training → Deployment).  
 - Use a shared Kanban board (GitHub Projects) with specific, small tasks so non-coders can pick up well-scoped items.
+- Distributed Training: Rely on local network sharing or Chrome Remote Desktop files transfer to distribute pre-extracted data to team PCs (GTX 1080, RTX 4060, and GTX 1660 Super), rather than everyone downloading independently.
 
 ***
 

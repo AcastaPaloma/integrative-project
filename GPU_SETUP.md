@@ -4,6 +4,12 @@
 
 The training code is **100% GPU-agnostic**. You maintain separate conda environments per GPU, and the same scripts run everywhere. Checkpoints are fully portable between devices.
 
+## Pre-requisite: Getting the Dataset via Remote Desktop
+If you are helping a friend train via Chrome Remote Desktop, **do not download the dataset from scratch** on their PC.
+1. On your host PC (GTX 1080), ensure the data is in `a:\integrative-project\data\MICCAI_BraTS2020_TrainingData`.
+2. Using Chrome Remote Desktop's "File Transfer" feature or a local network share, copy the `data\` folder directly to the same relative project path on your friend's PC.
+3. This saves hours of downloading and extracting.
+
 ---
 
 ## Environment 1: GTX 1080 (CUDA 12.1)
@@ -18,6 +24,11 @@ Expected: `PyTorch 2.3.1, CUDA available: True, GPU: NVIDIA GeForce GTX 1080`
 ---
 
 ## Environment 2: RTX 4060 (CUDA 12.4)
+
+*Instructions for non-coding friends:*
+1. Open the Windows Start menu and search for **Anaconda Prompt**. Open it.
+2. Navigate to where you saved this project folder (e.g., `cd path\to\integrative-project`).
+3. Run the following commands exactly as written:
 
 ```bash
 conda create -n rtx-4060-IP python=3.11 -y
@@ -34,6 +45,32 @@ preprocessing:
   patch_size: [128, 128, 128]
 ```
 
+---
+
+## Environment 3: GTX 1660 Super (CUDA 12.1 or 11.8)
+
+*Instructions for non-coding friends:*
+1. Open the Windows Start menu and search for **Anaconda Prompt**. Open it.
+2. Navigate to where you saved this project folder (e.g., `cd path\to\integrative-project`).
+3. Run the following commands. The GTX 1660 Super uses the Turing architecture and has 6GB of VRAM:
+
+```bash
+conda create -n gtx-1660s-IP python=3.11 -y
+conda activate gtx-1660s-IP
+pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+**CRITICAL: 6GB VRAM Limit**
+Because 3D models are massive, the default patch size will crash the 1660 Super. You MUST create a `configs/gtx1660s.yaml` file with a smaller patch size:
+
+```yaml
+# REQUIRED for GTX 1660 Super (save as configs/gtx1660s.yaml)
+preprocessing:
+  patch_size: [64, 64, 64]
+training:
+  sw_batch_size: 1
+```
 ---
 
 ## Environment 3: Google Colab
@@ -77,8 +114,8 @@ drive.mount('/content/drive')
 | Device | What to Run | Estimated Time |
 |---|---|---|
 | GTX 1080 (you) | HP tuning → `unet_4ch` → `cnn_4ch` | ~3 days |
-| RTX 4060 (friend) | `unet_flair`, `unet_t1`, `unet_t1ce`, `unet_t2` | ~2 days |
-| Colab | `unet_flair_t2`, `unet_t1_t1ce`, cross-modality tests | ~2 days |
+| RTX 4060 (friend 1) | `unet_flair`, `unet_t1`, `unet_t1ce`, `unet_t2` | ~2 days |
+| GTX 1660 Super (friend 2) | `unet_flair_t2`, `unet_t1_t1ce`, `unet_flair_t1ce`, `unet_3ch_no_t1` | ~3 days |
 
 ### Running Experiments
 

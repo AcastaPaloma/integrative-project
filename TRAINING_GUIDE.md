@@ -58,9 +58,9 @@ flowchart TD
 | **PyTorch** | 2.3.1 | 2.5.1 | Pre-installed (~2.4+) |
 | **CUDA Toolkit** | 12.1 | 12.4 | Pre-installed |
 | **MONAI** | 1.4.0 | 1.4.0 | 1.4.0 |
-| **Compute Cap** | 6.1 (Pascal) | 8.9 (Ada) | 7.5+ (T4/A100) |
-| **VRAM** | 8 GB | 8 GB | 15 GB (T4) / 40 GB (A100) |
-| **Env name** | `gtx-1080-IP` | `rtx-4060-IP` | N/A (global) |
+| **Compute Cap** | 6.1 (Pascal) | 8.9 (Ada) | 7.5 (Turing) |
+| **VRAM** | 8 GB | 8 GB | 6 GB |
+| **Env name** | `gtx-1080-IP` | `rtx-4060-IP` | `gtx-1660s-IP` |
 | **num_workers** | 0 (Windows deadlock) | 0–2 | 2–4 |
 | **Max patch** | 96³ | 96³–128³ | 128³ |
 
@@ -171,12 +171,11 @@ Each device needs access to the same dataset. Options:
 
 | Method | Pros | Cons |
 |---|---|---|
-| USB drive | Simple, fast | Manual transfer |
-| Google Drive | Colab-native | Slow initial upload |
-| Network share | Real-time sync | Complex setup |
-| Git LFS | Version-controlled | Expensive for 16 GB |
+| Chrome Remote Desktop | Fast local transfer | Requires host PC to be on |
+| Google Drive | Easy sharing | Slow initial upload/download |
+| USB drive | Simple | Requires physical access |
 
-**Recommended:** Extract on your PC → copy `data/raw/` to USB → copy to friend's PC. For Colab, upload the zip to Drive and extract there once.
+**Recommended:** Since you are using Chrome Remote Desktop to help your friends, use its "File Transfer" feature to drop your pre-extracted `data/MICCAI_BraTS2020_TrainingData` folder directly onto their PCs. This avoids downloading and extracting from scratch.
 
 ---
 
@@ -247,10 +246,10 @@ This loads `checkpoints/unet_4ch/last_model.pth` and continues from the last epo
  DEVICE              EXPERIMENTS                        EST. WALL TIME
  ─────────────────── ────────────────────────────────── ─────────────
  GTX 1080 (you)      unet_4ch → cnn_4ch                 ~3 days
- RTX 4060 (friend)   unet_flair → unet_t1 →             ~2 days
+ RTX 4060 (friend 1) unet_flair → unet_t1 →             ~2 days
                       unet_t1ce → unet_t2
- Colab               unet_flair_t2 → unet_t1_t1ce →     ~2–3 days
-                      unet_flair_t1ce → unet_3ch_no_t1    (with disconnects)
+ GTX 1660S (friend 2)unet_flair_t2 → unet_t1_t1ce →     ~3 days
+                      unet_flair_t1ce → unet_3ch_no_t1
 ```
 
 Run experiments **sequentially** on each device (one at a time — VRAM constraint).
