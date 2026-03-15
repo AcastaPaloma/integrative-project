@@ -41,7 +41,7 @@ def main():
     parser.add_argument("--experiment", type=str, required=True,
                         help="Experiment name from experiments.yaml")
     parser.add_argument("--config", type=str, default="full",
-                        choices=["default", "dev", "full"])
+                        choices=["default", "dev", "full", "tuned"])
     parser.add_argument("--resume", action="store_true",
                         help="Resume from last checkpoint")
     args = parser.parse_args()

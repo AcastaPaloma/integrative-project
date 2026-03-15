@@ -5,8 +5,8 @@ Runs short training trials in dev mode to find optimal hyperparameters,
 then saves the best config as configs/tuned.yaml.
 
 Usage:
-    python scripts/tune_hyperparams.py --n_trials 25 --epochs_per_trial 15
-    python scripts/tune_hyperparams.py --n_trials 10 --epochs_per_trial 10 --max_samples 10
+    python scripts/tune_hyperparams.py --n_trials 15 --epochs_per_trial 30
+    python scripts/tune_hyperparams.py --n_trials 10 --epochs_per_trial 20 --max_samples 10
 """
 
 import sys
@@ -32,7 +32,7 @@ from src.training.trainer import Trainer
 
 
 def objective(trial, args, base_cfg, train_samples, val_samples):
-    """Optuna objective function — returns negative mean Dice (to minimize)."""
+    """Optuna objective function — returns best mean Dice (to maximize)."""
     import copy
     cfg = copy.deepcopy(base_cfg)
 
@@ -220,7 +220,6 @@ def main():
     channels_map = {
         "small": [16, 32, 64, 128],
         "medium": [24, 48, 96, 192],
-        "large": [32, 64, 128, 256],
     }
     patch_map = {
         "small": [64, 64, 64],
