@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import Dataset, DataLoader, list_data_collate
+from monai.data import CacheDataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -117,9 +117,19 @@ def main():
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
-    # Datasets — plain Dataset: no disk bloat, no Windows multiprocessing issues
-    train_ds = Dataset(data=train_files, transform=train_transforms)
-    val_ds = Dataset(data=val_files, transform=val_transforms)
+    # CacheDataset: caches preprocessed volumes in RAM after epoch 1.
+    # num_workers=0 = safe on Windows (avoids multiprocessing spawn crash during build).
+    # cache_rate=0.5 = ~8-9 GB RAM used, fits in 16 GB.
+    # DataLoader workers (num_workers=2) are fine: they only do fast random augmentations
+    # on already-cached tensors, no heavy IO or transform work.
+    train_ds = CacheDataset(
+        data=train_files, transform=train_transforms,
+        cache_rate=0.5, num_workers=0,
+    )
+    val_ds = CacheDataset(
+        data=val_files, transform=val_transforms,
+        cache_rate=0.5, num_workers=0,
+    )
 
     # DataLoaders
     train_loader = DataLoader(
