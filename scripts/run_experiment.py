@@ -117,19 +117,18 @@ def main():
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
-    # Datasets
-    cache_rate = 1.0 if max_samples and max_samples <= 10 else 0.5
+    # CacheDataset: caches preprocessed volumes in RAM after epoch 1.
+    # num_workers=0 = safe on Windows (avoids multiprocessing spawn crash during build).
+    # cache_rate=0.5 = ~8-9 GB RAM used, fits in 16 GB.
+    # DataLoader workers (num_workers=2 from config) are fine after cache build:
+    # they only apply fast random augmentations on already-cached tensors.
     train_ds = CacheDataset(
-        data=train_files,
-        transform=train_transforms,
-        cache_rate=cache_rate,
-        num_workers=cfg["training"].get("num_workers", 2),
+        data=train_files, transform=train_transforms,
+        cache_rate=0.5, num_workers=0,
     )
     val_ds = CacheDataset(
-        data=val_files,
-        transform=val_transforms,
-        cache_rate=1.0,
-        num_workers=cfg["training"].get("num_workers", 2),
+        data=val_files, transform=val_transforms,
+        cache_rate=0.5, num_workers=0,
     )
 
     # DataLoaders
