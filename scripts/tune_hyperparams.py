@@ -108,7 +108,13 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
         optimizer, T_0=50, T_mult=1, eta_min=1e-7,
     )
 
-    def prune_callback(epoch, dice):
+    import math
+
+    def prune_callback(epoch, dice, train_loss=0.0):
+        if math.isnan(train_loss) or math.isnan(dice):
+            print_log(f"Trial {trial.number} pruned early due to NaN value (loss={train_loss:.4f}, dice={dice:.4f})", level="WARN")
+            raise optuna.exceptions.TrialPruned()
+
         trial.report(dice, epoch)
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()

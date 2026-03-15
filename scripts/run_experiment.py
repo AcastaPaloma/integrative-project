@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import CacheDataset, DataLoader, list_data_collate
+from monai.data import PersistentDataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -117,19 +117,20 @@ def main():
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
+    # Setup persistent cache directory
+    persistent_cache_dir = Path(cfg["paths"]["data_root"]) / "persistent_cache"
+    persistent_cache_dir.mkdir(parents=True, exist_ok=True)
+
     # Datasets
-    cache_rate = 1.0 if max_samples and max_samples <= 10 else 0.5
-    train_ds = CacheDataset(
+    train_ds = PersistentDataset(
         data=train_files,
         transform=train_transforms,
-        cache_rate=cache_rate,
-        num_workers=cfg["training"].get("num_workers", 2),
+        cache_dir=str(persistent_cache_dir),
     )
-    val_ds = CacheDataset(
+    val_ds = PersistentDataset(
         data=val_files,
         transform=val_transforms,
-        cache_rate=1.0,
-        num_workers=cfg["training"].get("num_workers", 2),
+        cache_dir=str(persistent_cache_dir),
     )
 
     # DataLoaders

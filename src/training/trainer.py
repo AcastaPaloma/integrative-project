@@ -156,7 +156,10 @@ class Trainer:
 
             # --- Callbacks ---
             for callback in self.callbacks:
-                callback(epoch, val_dice_mean)
+                try:
+                    callback(epoch, val_dice_mean, train_loss)
+                except TypeError:
+                    callback(epoch, val_dice_mean)
 
         print_log(f"Training complete. Best mean Dice: {self.best_dice:.4f}")
         return history
@@ -176,6 +179,13 @@ class Trainer:
             with autocast("cuda", enabled=self.use_amp):
                 outputs = self.model(inputs)
                 loss = self.loss_fn(outputs, labels)
+
+            if torch.isnan(loss) or torch.isinf(loss):
+                print_log("NaN/Inf loss detected. Skipping backward pass.", level="WARN")
+                epoch_loss += float("nan")
+                step_count += 1
+                self.optimizer.zero_grad()
+                continue
 
             self.scaler.scale(loss).backward()
             self.scaler.unscale_(self.optimizer)
