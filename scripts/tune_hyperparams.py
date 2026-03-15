@@ -17,7 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import CacheDataset, DataLoader, list_data_collate
+import gc
+from monai.data import Dataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -43,9 +44,8 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
     channels_options = {
         "small": [16, 32, 64, 128],
         "medium": [24, 48, 96, 192],
-        "large": [32, 64, 128, 256],
     }
-    channels_choice = trial.suggest_categorical("channels", ["small", "medium", "large"])
+    channels_choice = trial.suggest_categorical("channels", ["small", "medium"])
     channels = channels_options[channels_choice]
 
     patch_options = {
@@ -86,14 +86,9 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
-    train_ds = CacheDataset(
-        data=train_files, transform=train_transforms,
-        cache_rate=1.0, num_workers=0,
-    )
-    val_ds = CacheDataset(
-        data=val_files, transform=val_transforms,
-        cache_rate=1.0, num_workers=0,
-    )
+    # Use regular Dataset instead of CacheDataset to avoid memory accumulation across trials
+    train_ds = Dataset(data=train_files, transform=train_transforms)
+    val_ds = Dataset(data=val_files, transform=val_transforms)
 
     train_loader = DataLoader(
         train_ds, batch_size=cfg["training"]["batch_size"],
@@ -110,7 +105,7 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
         model.parameters(), lr=lr, weight_decay=weight_decay,
     )
     scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=args.epochs_per_trial, T_mult=1, eta_min=1e-7,
+        optimizer, T_0=50, T_mult=1, eta_min=1e-7,
     )
 
     trainer = Trainer(
@@ -137,15 +132,24 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
     for epoch, dice in enumerate(history.get("val_dice_mean", [])):
         trial.report(dice, epoch)
         if trial.should_prune():
+            # Memory cleanup on prune
+            del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader
+            torch.cuda.empty_cache()
+            gc.collect()
             raise optuna.exceptions.TrialPruned()
+
+    # Memory cleanup on finish
+    del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader
+    torch.cuda.empty_cache()
+    gc.collect()
 
     return best_dice
 
 
 def main():
     parser = argparse.ArgumentParser(description="Hyperparameter tuning with Optuna")
-    parser.add_argument("--n_trials", type=int, default=25)
-    parser.add_argument("--epochs_per_trial", type=int, default=15)
+    parser.add_argument("--n_trials", type=int, default=15)
+    parser.add_argument("--epochs_per_trial", type=int, default=30)
     parser.add_argument("--max_samples", type=int, default=20,
                         help="Max training samples per trial")
     parser.add_argument("--config", type=str, default="dev",
@@ -170,18 +174,19 @@ def main():
     print(f"  Max samples: {args.max_samples}")
     print("=" * 60)
 
-    # Data setup (shared across trials)
+    # Data setup (shared across trials) - In memory only, no saving to disk!
     set_seed(cfg["seed"])
     samples = discover_brats_samples(
         cfg["paths"]["data_root"], max_samples=args.max_samples
     )
-    train_samples, val_samples, _ = create_splits(
-        samples,
-        ratios=cfg["data"]["split_ratios"],
-        seed=cfg["seed"],
-        splits_dir=cfg["paths"]["splits_dir"],
-        force=True,  # Force re-split for HP tuning subset
-    )
+    
+    # Do an ephemeral train/val split without persisting to JSON
+    from sklearn.model_selection import train_test_split
+    patient_ids = [s["patient_id"] for s in samples]
+    train_ids, val_ids = train_test_split(patient_ids, test_size=0.3, random_state=cfg["seed"])
+    id_to_sample = {s["patient_id"]: s for s in samples}
+    train_samples = [id_to_sample[pid] for pid in train_ids]
+    val_samples = [id_to_sample[pid] for pid in val_ids]
 
     # Run Optuna study
     study = optuna.create_study(
@@ -229,6 +234,8 @@ def main():
             "dropout": best["dropout"],
         },
         "training": {
+            "sw_batch_size": 1,
+            "gradient_checkpointing": True,
             "optimizer": {
                 "lr": best["lr"],
                 "weight_decay": best["weight_decay"],

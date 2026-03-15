@@ -55,7 +55,7 @@ class Trainer:
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
         # Metric for validation
-        self.dice_metric = DiceMetric(include_background=False, reduction="mean_batch")
+        self.dice_metric = DiceMetric(include_background=True, reduction="mean_batch")
 
         # Post-processing for predictions
         self.post_pred = Compose([Activations(sigmoid=True), AsDiscrete(threshold=0.5)])
