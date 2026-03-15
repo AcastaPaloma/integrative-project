@@ -1,0 +1,20 @@
+preprocessing:
+  patch_size:
+  - 96
+  - 96
+  - 96
+model:
+  channels:
+  - 32
+  - 64
+  - 128
+  - 256
+  strides:
+  - 2
+  - 2
+  - 2
+  dropout: 0.35000000000000003
+training:
+  optimizer:
+    lr: 0.0016807774772943217
+    weight_decay: 8.134646270703351e-05

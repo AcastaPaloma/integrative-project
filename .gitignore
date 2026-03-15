@@ -10,6 +10,7 @@ __pycache__/
 # Data (too large for git)
 /data/raw/
 /data/splits/
+/data/MICCAI*/
 
 # Training outputs
 /checkpoints/
@@ -26,3 +27,4 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
