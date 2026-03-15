@@ -108,10 +108,16 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
         optimizer, T_0=50, T_mult=1, eta_min=1e-7,
     )
 
+    def prune_callback(epoch, dice):
+        trial.report(dice, epoch)
+        if trial.should_prune():
+            raise optuna.exceptions.TrialPruned()
+
     trainer = Trainer(
         model=model, loss_fn=loss_fn, optimizer=optimizer,
         scheduler=scheduler, train_loader=train_loader,
         val_loader=val_loader, cfg=cfg, device=device,
+        callbacks=[prune_callback],
     )
 
     # Train
@@ -120,23 +126,20 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
     except RuntimeError as e:
         if "out of memory" in str(e).lower():
             print_log(f"Trial {trial.number} OOM — pruning")
+            del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader
             torch.cuda.empty_cache()
+            gc.collect()
             raise optuna.exceptions.TrialPruned()
+        raise
+    except optuna.exceptions.TrialPruned:
+        del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader
+        torch.cuda.empty_cache()
+        gc.collect()
         raise
 
     # Return best dice
     best_dice = trainer.best_dice
     print(f"Trial {trial.number} result: best Dice = {best_dice:.4f}")
-
-    # Report intermediate values for pruning
-    for epoch, dice in enumerate(history.get("val_dice_mean", [])):
-        trial.report(dice, epoch)
-        if trial.should_prune():
-            # Memory cleanup on prune
-            del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader
-            torch.cuda.empty_cache()
-            gc.collect()
-            raise optuna.exceptions.TrialPruned()
 
     # Memory cleanup on finish
     del model, trainer, optimizer, train_ds, val_ds, train_loader, val_loader

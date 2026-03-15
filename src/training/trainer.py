@@ -36,6 +36,7 @@ class Trainer:
         val_loader: DataLoader,
         cfg: dict,
         device: torch.device,
+        callbacks: list = None,
     ):
         self.model = model.to(device)
         self.loss_fn = loss_fn
@@ -45,6 +46,7 @@ class Trainer:
         self.val_loader = val_loader
         self.cfg = cfg
         self.device = device
+        self.callbacks = callbacks or []
 
         # Mixed precision
         self.use_amp = cfg["training"].get("mixed_precision", True)
@@ -151,6 +153,10 @@ class Trainer:
             if self.early_stopping_enabled and self.epochs_without_improvement >= self.patience:
                 print_log(f"Early stopping at epoch {epoch+1} (no improvement for {self.patience} epochs)")
                 break
+
+            # --- Callbacks ---
+            for callback in self.callbacks:
+                callback(epoch, val_dice_mean)
 
         print_log(f"Training complete. Best mean Dice: {self.best_dice:.4f}")
         return history
