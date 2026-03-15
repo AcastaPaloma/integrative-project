@@ -129,7 +129,7 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
             raise optuna.exceptions.TrialPruned()
         raise
 
-    # Return best dice (Optuna minimizes, so negate)
+    # Return best dice
     best_dice = trainer.best_dice
     print(f"Trial {trial.number} result: best Dice = {best_dice:.4f}")
 
@@ -139,7 +139,7 @@ def objective(trial, args, base_cfg, train_samples, val_samples):
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
 
-    return -best_dice  # Negative because Optuna minimizes
+    return best_dice
 
 
 def main():
@@ -185,7 +185,7 @@ def main():
 
     # Run Optuna study
     study = optuna.create_study(
-        direction="minimize",
+        direction="maximize",
         pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=5),
         study_name="brats-hp-tuning",
     )
@@ -202,7 +202,7 @@ def main():
     print("=" * 60)
 
     print(f"\nBest trial: {study.best_trial.number}")
-    print(f"  Best Dice: {-study.best_trial.value:.4f}")
+    print(f"  Best Dice: {study.best_trial.value:.4f}")
     print(f"  Best params:")
     for k, v in study.best_trial.params.items():
         print(f"    {k}: {v}")
