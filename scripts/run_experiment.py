@@ -119,16 +119,14 @@ def main():
 
     # CacheDataset: caches preprocessed volumes in RAM after epoch 1.
     # num_workers=0 = safe on Windows (avoids multiprocessing spawn crash during build).
-    # cache_rate=0.5 = ~8-9 GB RAM used, fits in 16 GB.
-    # DataLoader workers (num_workers=2 from config) are fine after cache build:
-    # they only apply fast random augmentations on already-cached tensors.
+    # cache_rate=0.3 = ~5 GB RAM used, safe for 16 GB machines with Windows overhead.
     train_ds = CacheDataset(
         data=train_files, transform=train_transforms,
-        cache_rate=0.5, num_workers=0,
+        cache_rate=0.3, num_workers=0,
     )
     val_ds = CacheDataset(
         data=val_files, transform=val_transforms,
-        cache_rate=0.5, num_workers=0,
+        cache_rate=0.3, num_workers=0,
     )
 
     # DataLoaders
