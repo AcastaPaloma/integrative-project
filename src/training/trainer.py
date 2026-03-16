@@ -51,6 +51,14 @@ class Trainer:
         # Mixed precision
         self.use_amp = cfg["training"].get("mixed_precision", True)
         self.scaler = GradScaler("cuda", enabled=self.use_amp)
+        self.amp_device_type = "cuda" if str(device).startswith("cuda") else "cpu"
+
+        # Numerical stability controls
+        train_cfg = cfg.get("training", {})
+        clip_cfg = train_cfg.get("gradient_clip", {})
+        self.grad_clip_enabled = clip_cfg.get("enabled", True)
+        self.grad_clip_max_norm = clip_cfg.get("max_norm", 1.0)
+        self.loss_in_fp32 = train_cfg.get("loss_in_fp32", True)
 
         # Checkpointing
         self.checkpoint_dir = Path(cfg["paths"]["checkpoint_dir"])
@@ -169,32 +177,58 @@ class Trainer:
         self.model.train()
         epoch_loss = 0.0
         step_count = 0
+        skipped_batches = 0
 
         for batch in self.train_loader:
             inputs = batch["image"].to(self.device)
             labels = batch["label"].to(self.device)
 
-            self.optimizer.zero_grad()
+            self.optimizer.zero_grad(set_to_none=True)
 
-            with autocast("cuda", enabled=self.use_amp):
+            with autocast(self.amp_device_type, enabled=self.use_amp):
                 outputs = self.model(inputs)
+
+            # Keep loss math in FP32 for stability when AMP is enabled.
+            if self.use_amp and self.loss_in_fp32:
+                loss = self.loss_fn(outputs.float(), labels.float())
+            else:
                 loss = self.loss_fn(outputs, labels)
 
             if torch.isnan(loss) or torch.isinf(loss):
+                skipped_batches += 1
                 print_log("NaN/Inf loss detected. Skipping backward pass.", level="WARN")
-                epoch_loss += float("nan")
-                step_count += 1
-                self.optimizer.zero_grad()
+                self.optimizer.zero_grad(set_to_none=True)
                 continue
 
             self.scaler.scale(loss).backward()
-            self.scaler.unscale_(self.optimizer)
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+
+            if self.grad_clip_enabled:
+                self.scaler.unscale_(self.optimizer)
+                grad_norm = torch.nn.utils.clip_grad_norm_(
+                    self.model.parameters(), max_norm=self.grad_clip_max_norm
+                )
+                if not torch.isfinite(grad_norm):
+                    skipped_batches += 1
+                    print_log("Non-finite gradient norm detected. Skipping optimizer step.", level="WARN")
+                    self.optimizer.zero_grad(set_to_none=True)
+                    self.scaler.update()
+                    continue
+
             self.scaler.step(self.optimizer)
             self.scaler.update()
 
             epoch_loss += loss.item()
             step_count += 1
+
+        if skipped_batches > 0:
+            print_log(
+                f"Skipped {skipped_batches} training batches due to non-finite values.",
+                level="WARN",
+            )
+
+        if step_count == 0:
+            print_log("All training batches were skipped this epoch (non-finite values).", level="WARN")
+            return float("inf")
 
         return epoch_loss / max(step_count, 1)
 
