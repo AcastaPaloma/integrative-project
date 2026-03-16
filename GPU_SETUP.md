@@ -165,3 +165,6 @@ checkpoint = torch.load("checkpoints/unet_4ch/best_model.pth", map_location="cud
 | Import errors | `conda activate <env>` in a fresh terminal. |
 | Colab disconnects | Use `--resume` flag. Checkpoints save every epoch. |
 | `num_workers` deadlock (Windows) | Set `num_workers: 0` in your config YAML. |
+
+
+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
