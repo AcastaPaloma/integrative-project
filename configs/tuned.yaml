@@ -1,0 +1,18 @@
+# ============================================================
+# Pre-emptive tuned configuration from Optuna
+# ============================================================
+
+preprocessing:
+  patch_size: [96, 96, 96]  # "medium"
+
+model:
+  channels: [16, 32, 64, 128]  # "small"
+  strides: [2, 2, 2] # 4 channels means 3 strides of 2
+  dropout: 0.25
+
+training:
+  sw_batch_size: 1
+  gradient_checkpointing: true
+  optimizer:
+    lr: 0.0017900345635256153
+    weight_decay: 0.00012868474344319349
