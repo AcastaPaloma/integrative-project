@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import Dataset, DataLoader, list_data_collate
+from monai.data import CacheDataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -116,18 +116,32 @@ def main():
     # Transforms
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
-    # Plain Dataset + single-process DataLoader: safest for 16 GB Windows machines.
-    # CacheDataset + DataLoader workers caused OOM freezes because worker processes
-    # each duplicate the cached data in memory (cache × 3 = exceeded 16 GB).
-    train_ds = Dataset(data=train_files, transform=train_transforms)
-    val_ds = Dataset(data=val_files, transform=val_transforms)
 
-    # DataLoaders — num_workers=0 prevents worker process memory duplication.
+    # Cache controls RAM only; all samples are still iterated every epoch.
+    cache_cfg = cfg.get("data", {}).get("cache", {})
+    train_cache_rate = cache_cfg.get("train_rate", 0.08)
+    val_cache_rate = cache_cfg.get("val_rate", 0.15)
+    cache_workers = cache_cfg.get("num_workers", 0)
+    print_log(
+        f"Cache settings: train_rate={train_cache_rate:.2f}, "
+        f"val_rate={val_cache_rate:.2f}, workers={cache_workers}"
+    )
+
+    train_ds = CacheDataset(
+        data=train_files, transform=train_transforms,
+        cache_rate=train_cache_rate, num_workers=cache_workers,
+    )
+    val_ds = CacheDataset(
+        data=val_files, transform=val_transforms,
+        cache_rate=val_cache_rate, num_workers=cache_workers,
+    )
+
+    # DataLoaders
     train_loader = DataLoader(
         train_ds,
         batch_size=cfg["training"]["batch_size"],
         shuffle=True,
-        num_workers=0,
+        num_workers=cfg["training"].get("num_workers", 2),
         collate_fn=list_data_collate,
         pin_memory=True,
     )
@@ -135,7 +149,7 @@ def main():
         val_ds,
         batch_size=1,
         shuffle=False,
-        num_workers=0,
+        num_workers=cfg["training"].get("num_workers", 2),
         pin_memory=True,
     )
 
