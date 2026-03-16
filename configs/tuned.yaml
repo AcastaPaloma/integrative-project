@@ -13,6 +13,14 @@ model:
 training:
   sw_batch_size: 1
   gradient_checkpointing: true
+  mixed_precision: false
+  loss_in_fp32: true
+  gradient_clip:
+    enabled: true
+    max_norm: 0.5
+  non_finite:
+    lr_backoff_factor: 0.5
+    min_lr: 1.0e-6
   optimizer:
-    lr: 0.0017900345635256153
+    lr: 0.0005
     weight_decay: 0.00012868474344319349
