@@ -1,0 +1,20 @@
+Loading dataset: 100%|█████████████████████████████████████████████████████████████████| 77/77 [00:31<00:00,  2.45it/s]
+Loading dataset: 100%|█████████████████████████████████████████████████████████████████| 16/16 [00:05<00:00,  2.85it/s]
+[Model] 3D U-Net created
+[Model]   Total parameters:     1,188,630
+[Model]   Trainable parameters: 1,188,630
+[Model]   Channels: [16, 32, 64, 128]
+[Model]   In/Out: 2/3
+[Loss] DiceCE loss (lambda_dice=1.0, lambda_ce=1.0)
+[INFO] Starting training for 300 epochs
+[INFO]   Mixed precision: True
+[INFO]   Early stopping: True (patience=50)
+[INFO]   Device: cuda
+[INFO] Epoch 1/300 | Loss: 0.9545 | Dice: WT=0.4346 TC=0.2341 ET=0.1263 Mean=0.2650 | Acc: 0.9718 | LR: 1.79e-03 | Time: 305.9s
+[INFO]   → New best model! Dice=0.2650
+[INFO] Epoch 2/300 | Loss: 0.7287 | Dice: WT=0.7065 TC=0.3855 ET=0.2268 Mean=0.4396 | Acc: 0.9901 | LR: 1.78e-03 | Time: 295.7s
+[INFO]   → New best model! Dice=0.4396
+[WARN] NaN/Inf loss detected. Skipping backward pass.
+[INFO] Epoch 3/300 | Loss: nan | Dice: WT=0.7276 TC=0.4144 ET=0.2459 Mean=0.4626 | Acc: 0.9918 | LR: 1.77e-03 | Time: 314.3s
+[INFO]   → New best model! Dice=0.4626
+[WARN] NaN/Inf loss detected. Skipping backward pass.
