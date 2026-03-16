@@ -7,13 +7,19 @@ preprocessing:
   patch_size: [96, 96, 96]
   num_samples_per_volume: 2
 
+data:
+  cache:
+    train_rate: 0.08
+    val_rate: 0.15
+    num_workers: 0
+
 model:
   channels: [24, 48, 96, 192]
   gradient_checkpointing: true
 
 training:
   epochs: 300
-  num_workers: 2
+  num_workers: 0
   sw_batch_size: 1
   sw_overlap: 0.25
   early_stopping:

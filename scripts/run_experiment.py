@@ -117,16 +117,23 @@ def main():
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
 
-    # CacheDataset: caches preprocessed volumes in RAM after epoch 1.
-    # num_workers=0 = safe on Windows (avoids multiprocessing spawn crash during build).
-    # cache_rate=0.3 = ~5 GB RAM used, safe for 16 GB machines with Windows overhead.
+    # Cache rate controls RAM usage only; all samples are still iterated each epoch.
+    cache_cfg = cfg.get("data", {}).get("cache", {})
+    train_cache_rate = cache_cfg.get("train_rate", 0.08)
+    val_cache_rate = cache_cfg.get("val_rate", 0.15)
+    cache_workers = cache_cfg.get("num_workers", 0)
+    print_log(
+        f"Cache settings: train_rate={train_cache_rate:.2f}, "
+        f"val_rate={val_cache_rate:.2f}, workers={cache_workers}"
+    )
+
     train_ds = CacheDataset(
         data=train_files, transform=train_transforms,
-        cache_rate=0.3, num_workers=0,
+        cache_rate=train_cache_rate, num_workers=cache_workers,
     )
     val_ds = CacheDataset(
         data=val_files, transform=val_transforms,
-        cache_rate=0.3, num_workers=0,
+        cache_rate=val_cache_rate, num_workers=cache_workers,
     )
 
     # DataLoaders

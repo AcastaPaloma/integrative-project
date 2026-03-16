@@ -51,6 +51,22 @@ class Trainer:
         # Mixed precision
         self.use_amp = cfg["training"].get("mixed_precision", True)
         self.scaler = GradScaler("cuda", enabled=self.use_amp)
+        self.amp_device_type = "cuda" if str(device).startswith("cuda") else "cpu"
+
+        # Numerical stability controls
+        train_cfg = cfg.get("training", {})
+        clip_cfg = train_cfg.get("gradient_clip", {})
+        self.grad_clip_enabled = clip_cfg.get("enabled", True)
+        self.grad_clip_max_norm = clip_cfg.get("max_norm", 1.0)
+        self.loss_in_fp32 = train_cfg.get("loss_in_fp32", True)
+
+        non_finite_cfg = train_cfg.get("non_finite", {})
+        self.non_finite_lr_backoff = non_finite_cfg.get("lr_backoff_factor", 0.5)
+        self.non_finite_min_lr = non_finite_cfg.get("min_lr", 1e-6)
+        self.amp_fallback_enabled = non_finite_cfg.get("disable_amp_on_non_finite", True)
+        self.non_finite_log_batch_stats = non_finite_cfg.get("log_bad_batch_stats", True)
+        self.amp_disabled_due_to_instability = False
+        self._logged_bad_batch_stats = False
 
         # Checkpointing
         self.checkpoint_dir = Path(cfg["paths"]["checkpoint_dir"])
@@ -166,27 +182,138 @@ class Trainer:
         self.model.train()
         epoch_loss = 0.0
         step_count = 0
+        skipped_batches = 0
+        lr_reduced_this_epoch = False
 
         for batch in self.train_loader:
             inputs = batch["image"].to(self.device)
             labels = batch["label"].to(self.device)
 
-            self.optimizer.zero_grad()
+            self.optimizer.zero_grad(set_to_none=True)
 
-            with autocast("cuda", enabled=self.use_amp):
+            if not torch.isfinite(inputs).all() or not torch.isfinite(labels).all():
+                skipped_batches += 1
+                print_log("Non-finite inputs/labels detected. Skipping batch.", level="WARN")
+                self._log_bad_batch_stats_once(inputs, labels)
+                if not lr_reduced_this_epoch:
+                    self._backoff_learning_rate()
+                    lr_reduced_this_epoch = True
+                continue
+
+            with autocast(self.amp_device_type, enabled=self.use_amp):
                 outputs = self.model(inputs)
+
+            if not torch.isfinite(outputs).all():
+                skipped_batches += 1
+                print_log("Non-finite model outputs detected. Skipping backward pass.", level="WARN")
+                self._log_bad_batch_stats_once(inputs, labels, outputs)
+                self.optimizer.zero_grad(set_to_none=True)
+                if not lr_reduced_this_epoch:
+                    self._backoff_learning_rate()
+                    lr_reduced_this_epoch = True
+                continue
+
+            if self.use_amp and self.loss_in_fp32:
+                loss = self.loss_fn(outputs.float(), labels.float())
+            else:
                 loss = self.loss_fn(outputs, labels)
 
+            if not torch.isfinite(loss):
+                skipped_batches += 1
+                print_log("NaN/Inf loss detected. Skipping backward pass.", level="WARN")
+                self._log_bad_batch_stats_once(inputs, labels, outputs)
+                self.optimizer.zero_grad(set_to_none=True)
+                if not lr_reduced_this_epoch:
+                    self._backoff_learning_rate()
+                    lr_reduced_this_epoch = True
+                continue
+
             self.scaler.scale(loss).backward()
-            self.scaler.unscale_(self.optimizer)
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+
+            if self.grad_clip_enabled:
+                self.scaler.unscale_(self.optimizer)
+                grad_norm = torch.nn.utils.clip_grad_norm_(
+                    self.model.parameters(), max_norm=self.grad_clip_max_norm
+                )
+                if not torch.isfinite(grad_norm):
+                    skipped_batches += 1
+                    print_log("Non-finite gradient norm detected. Skipping optimizer step.", level="WARN")
+                    self._log_bad_batch_stats_once(inputs, labels, outputs)
+                    self.optimizer.zero_grad(set_to_none=True)
+                    self.scaler.update()
+                    if not lr_reduced_this_epoch:
+                        self._backoff_learning_rate()
+                        lr_reduced_this_epoch = True
+                    continue
+
             self.scaler.step(self.optimizer)
             self.scaler.update()
 
             epoch_loss += loss.item()
             step_count += 1
 
+        if skipped_batches > 0:
+            print_log(
+                f"Skipped {skipped_batches} training batches due to non-finite values.",
+                level="WARN",
+            )
+            if self.use_amp and self.amp_fallback_enabled and not self.amp_disabled_due_to_instability:
+                self.use_amp = False
+                self.amp_disabled_due_to_instability = True
+                print_log(
+                    "Disabling AMP for remaining epochs due to non-finite instability.",
+                    level="WARN",
+                )
+
+        if step_count == 0:
+            print_log("All training batches were skipped this epoch (non-finite values).", level="WARN")
+            return float("inf")
+
         return epoch_loss / max(step_count, 1)
+
+    def _backoff_learning_rate(self):
+        """Reduce LR after a non-finite batch to stabilize training."""
+        for group in self.optimizer.param_groups:
+            old_lr = group.get("lr", 0.0)
+            new_lr = max(old_lr * self.non_finite_lr_backoff, self.non_finite_min_lr)
+            group["lr"] = new_lr
+        print_log(
+            f"Reduced learning rate due to non-finite values: "
+            f"{self.optimizer.param_groups[0]['lr']:.2e}",
+            level="WARN",
+        )
+
+    def _log_bad_batch_stats_once(self, inputs, labels, outputs=None):
+        """Log compact tensor stats once to localize first non-finite source."""
+        if not self.non_finite_log_batch_stats or self._logged_bad_batch_stats:
+            return
+
+        input_stats = self._tensor_stats(inputs)
+        label_stats = self._tensor_stats(labels)
+        output_stats = self._tensor_stats(outputs) if outputs is not None else "n/a"
+        print_log(
+            f"Bad batch stats | input={input_stats} | label={label_stats} | output={output_stats}",
+            level="WARN",
+        )
+        self._logged_bad_batch_stats = True
+
+    @staticmethod
+    def _tensor_stats(x):
+        if x is None:
+            return "none"
+        t = x.detach().float().reshape(-1)
+        finite = torch.isfinite(t)
+        finite_count = int(finite.sum().item())
+        total = int(t.numel())
+        if finite_count == 0:
+            return f"finite=0/{total}"
+        tf = t[finite]
+        return (
+            f"finite={finite_count}/{total},"
+            f"min={tf.min().item():.3e},"
+            f"max={tf.max().item():.3e},"
+            f"mean={tf.mean().item():.3e}"
+        )
 
     @torch.no_grad()
     def _validate_epoch(self, epoch: int) -> tuple:

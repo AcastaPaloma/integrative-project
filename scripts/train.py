@@ -86,21 +86,29 @@ def main():
     val_transforms = get_val_transforms(cfg)
 
     # --- Datasets ---
-    # CacheDataset caches transformed data in memory for speed
-    cache_rate = 1.0 if max_samples and max_samples <= 10 else 0.5
+    # Cache rate controls RAM usage only; all samples are still iterated each epoch.
+    cache_cfg = cfg.get("data", {}).get("cache", {})
+    train_cache_rate = cache_cfg.get("train_rate", 0.08)
+    val_cache_rate = cache_cfg.get("val_rate", 0.15)
+    cache_workers = cache_cfg.get("num_workers", 0)
+
+    print_log(
+        f"Cache settings: train_rate={train_cache_rate:.2f}, "
+        f"val_rate={val_cache_rate:.2f}, workers={cache_workers}"
+    )
 
     train_ds = CacheDataset(
         data=train_files,
         transform=train_transforms,
-        cache_rate=cache_rate,
-        num_workers=cfg["training"].get("num_workers", 2),
+        cache_rate=train_cache_rate,
+        num_workers=cache_workers,
     )
 
     val_ds = CacheDataset(
         data=val_files,
         transform=val_transforms,
-        cache_rate=1.0,  # Always cache validation
-        num_workers=cfg["training"].get("num_workers", 2),
+        cache_rate=val_cache_rate,
+        num_workers=cache_workers,
     )
 
     # --- DataLoaders ---

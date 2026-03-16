@@ -21,6 +21,10 @@ data:
   num_classes: 3  # WT, TC, ET
   split_ratios: [0.70, 0.15, 0.15]  # train / val / test
   max_samples: null  # null = use all available
+  cache:
+    train_rate: 0.08
+    val_rate: 0.15
+    num_workers: 0
 
 # --- Preprocessing ---
 preprocessing:
@@ -67,6 +71,15 @@ training:
     lambda_dice: 1.0
     lambda_ce: 1.0
   mixed_precision: true
+  loss_in_fp32: true
+  gradient_clip:
+    enabled: true
+    max_norm: 0.5
+  non_finite:
+    lr_backoff_factor: 0.5
+    min_lr: 1.0e-6
+    disable_amp_on_non_finite: true
+    log_bad_batch_stats: true
   early_stopping:
     enabled: true
     patience: 50
