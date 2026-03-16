@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import yaml
 import torch
-from monai.data import CacheDataset, DataLoader, list_data_collate
+from monai.data import Dataset, DataLoader, list_data_collate
 
 from src.utils.config import load_config, CONFIGS_DIR
 from src.utils.seed import set_seed
@@ -116,25 +116,18 @@ def main():
     # Transforms
     train_transforms = get_train_transforms(cfg)
     val_transforms = get_val_transforms(cfg)
+    # Plain Dataset + single-process DataLoader: safest for 16 GB Windows machines.
+    # CacheDataset + DataLoader workers caused OOM freezes because worker processes
+    # each duplicate the cached data in memory (cache × 3 = exceeded 16 GB).
+    train_ds = Dataset(data=train_files, transform=train_transforms)
+    val_ds = Dataset(data=val_files, transform=val_transforms)
 
-    # CacheDataset: caches preprocessed volumes in RAM after epoch 1.
-    # num_workers=0 = safe on Windows (avoids multiprocessing spawn crash during build).
-    # cache_rate=0.3 = ~5 GB RAM used, safe for 16 GB machines with Windows overhead.
-    train_ds = CacheDataset(
-        data=train_files, transform=train_transforms,
-        cache_rate=0.3, num_workers=0,
-    )
-    val_ds = CacheDataset(
-        data=val_files, transform=val_transforms,
-        cache_rate=0.3, num_workers=0,
-    )
-
-    # DataLoaders
+    # DataLoaders — num_workers=0 prevents worker process memory duplication.
     train_loader = DataLoader(
         train_ds,
         batch_size=cfg["training"]["batch_size"],
         shuffle=True,
-        num_workers=cfg["training"].get("num_workers", 2),
+        num_workers=0,
         collate_fn=list_data_collate,
         pin_memory=True,
     )
@@ -142,7 +135,7 @@ def main():
         val_ds,
         batch_size=1,
         shuffle=False,
-        num_workers=cfg["training"].get("num_workers", 2),
+        num_workers=0,
         pin_memory=True,
     )
 
