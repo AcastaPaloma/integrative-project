@@ -23,6 +23,7 @@ def run_inference(
     cfg: dict,
     checkpoint_path: str,
     samples: List[Dict[str, str]],
+    modalities: Optional[List[str]] = None,
     output_dir: Optional[str] = None,
     device: Optional[torch.device] = None,
     num_cases: Optional[int] = None,
@@ -34,6 +35,8 @@ def run_inference(
         cfg: Full config dict
         checkpoint_path: Path to model checkpoint
         samples: List of sample dicts from dataset
+        modalities: Input modalities to load (e.g. ["flair", "t2"]).
+            If None, defaults to all 4 modalities.
         output_dir: Where to save NIfTI predictions (None = use cfg default)
         device: Torch device
         num_cases: Max number of cases to process
@@ -64,7 +67,7 @@ def run_inference(
 
     # Build file list for MONAI
     from src.data.dataset import get_monai_file_list
-    file_list = get_monai_file_list(samples)
+    file_list = get_monai_file_list(samples, modalities=modalities)
 
     # Dataset (no caching for inference)
     dataset = Dataset(data=file_list, transform=val_transforms)
@@ -90,6 +93,13 @@ def run_inference(
 
         image = data["image"].unsqueeze(0).to(device)  # (1, C, D, H, W)
         label = data["label"]  # (3, D, H, W) — ground truth
+
+        expected_channels = cfg["model"]["in_channels"]
+        if image.shape[1] != expected_channels:
+            raise ValueError(
+                f"Input channel mismatch for {patient_id}: model expects {expected_channels}, "
+                f"but got {image.shape[1]}. Check inference modalities vs model in_channels."
+            )
 
         with torch.no_grad(), torch.amp.autocast("cuda", enabled=cfg["training"].get("mixed_precision", True)):
             output = inferer(image, model)  # (1, 3, D, H, W)
