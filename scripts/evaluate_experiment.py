@@ -91,6 +91,7 @@ def main():
         cfg=cfg,
         checkpoint_path=checkpoint_path,
         samples=target_samples,
+        modalities=modalities,
         device=device,
         modalities=modalities,
     )
