@@ -108,7 +108,11 @@ def run_inference(
                 f"modalities={modalities}."
             )
 
-        with torch.no_grad(), torch.amp.autocast("cuda", enabled=cfg["training"].get("mixed_precision", True)):
+        # Keep inference in full precision by default; some checkpoints produce
+        # near-zero logits under AMP and collapse to empty masks after thresholding.
+        inf_amp = cfg.get("inference", {}).get("mixed_precision", False)
+        amp_device_type = "cuda" if str(device).startswith("cuda") else "cpu"
+        with torch.no_grad(), torch.amp.autocast(amp_device_type, enabled=inf_amp):
             output = inferer(image, model)  # (1, 3, D, H, W)
 
         # Post-process
