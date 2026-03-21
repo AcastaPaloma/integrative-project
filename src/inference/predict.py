@@ -27,7 +27,6 @@ def run_inference(
     output_dir: Optional[str] = None,
     device: Optional[torch.device] = None,
     num_cases: Optional[int] = None,
-    modalities: Optional[List[str]] = None,
 ) -> List[Dict]:
     """
     Run sliding window inference on a list of samples.
@@ -36,8 +35,6 @@ def run_inference(
         cfg: Full config dict
         checkpoint_path: Path to model checkpoint
         samples: List of sample dicts from dataset
-        modalities: Input modalities to load (e.g. ["flair", "t2"]).
-            If None, defaults to all 4 modalities.
         output_dir: Where to save NIfTI predictions (None = use cfg default)
         device: Torch device
         num_cases: Max number of cases to process
@@ -102,20 +99,13 @@ def run_inference(
         label = data["label"]  # (3, D, H, W) — ground truth
 
         expected_channels = cfg["model"]["in_channels"]
-<<<<<<< HEAD
         actual_channels = int(image.shape[1])
         if actual_channels != expected_channels:
             raise RuntimeError(
                 "Input channel mismatch during inference: "
                 f"model expects {expected_channels} channel(s), "
                 f"but data loader produced {actual_channels}. "
-                f"modalities={modalities}."
-=======
-        if image.shape[1] != expected_channels:
-            raise ValueError(
-                f"Input channel mismatch for {patient_id}: model expects {expected_channels}, "
-                f"but got {image.shape[1]}. Check inference modalities vs model in_channels."
->>>>>>> 9cc68b63c686704c9d3a83d276a3de63f15d5fa1
+                f"patient_id={patient_id}, modalities={modalities}."
             )
 
         with torch.no_grad(), torch.amp.autocast("cuda", enabled=cfg["training"].get("mixed_precision", True)):

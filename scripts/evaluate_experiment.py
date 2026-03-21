@@ -93,7 +93,6 @@ def main():
         samples=target_samples,
         modalities=modalities,
         device=device,
-        modalities=modalities,
     )
 
     # Compute metrics
