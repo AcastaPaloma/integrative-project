@@ -55,6 +55,7 @@ def main():
     # Override config
     cfg["model"]["architecture"] = experiment["model"]
     cfg["model"]["in_channels"] = len(modalities)
+    cfg.setdefault("data", {})["modalities"] = modalities
 
     # Paths
     checkpoint_path = str(Path(cfg["paths"]["checkpoint_dir"]) / args.experiment / "best_model.pth")
@@ -91,6 +92,7 @@ def main():
         checkpoint_path=checkpoint_path,
         samples=target_samples,
         device=device,
+        modalities=modalities,
     )
 
     # Compute metrics

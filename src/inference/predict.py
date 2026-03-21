@@ -26,6 +26,7 @@ def run_inference(
     output_dir: Optional[str] = None,
     device: Optional[torch.device] = None,
     num_cases: Optional[int] = None,
+    modalities: Optional[List[str]] = None,
 ) -> List[Dict]:
     """
     Run sliding window inference on a list of samples.
@@ -37,6 +38,8 @@ def run_inference(
         output_dir: Where to save NIfTI predictions (None = use cfg default)
         device: Torch device
         num_cases: Max number of cases to process
+        modalities: Input modalities to load (e.g. ["t1"] for single-modality model).
+                If None, uses cfg["data"]["modalities"] when present, else all 4.
 
     Returns:
         List of dicts with "patient_id", "prediction_path", "prediction" (numpy)
@@ -62,9 +65,13 @@ def run_inference(
     # Transforms (validation — no augmentation)
     val_transforms = get_val_transforms(cfg)
 
+    # Resolve modalities for inference data loading.
+    if modalities is None:
+        modalities = cfg.get("data", {}).get("modalities")
+
     # Build file list for MONAI
     from src.data.dataset import get_monai_file_list
-    file_list = get_monai_file_list(samples)
+    file_list = get_monai_file_list(samples, modalities=modalities)
 
     # Dataset (no caching for inference)
     dataset = Dataset(data=file_list, transform=val_transforms)
@@ -90,6 +97,16 @@ def run_inference(
 
         image = data["image"].unsqueeze(0).to(device)  # (1, C, D, H, W)
         label = data["label"]  # (3, D, H, W) — ground truth
+
+        expected_channels = cfg["model"]["in_channels"]
+        actual_channels = int(image.shape[1])
+        if actual_channels != expected_channels:
+            raise RuntimeError(
+                "Input channel mismatch during inference: "
+                f"model expects {expected_channels} channel(s), "
+                f"but data loader produced {actual_channels}. "
+                f"modalities={modalities}."
+            )
 
         with torch.no_grad(), torch.amp.autocast("cuda", enabled=cfg["training"].get("mixed_precision", True)):
             output = inferer(image, model)  # (1, 3, D, H, W)
