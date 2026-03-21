@@ -68,7 +68,7 @@ def zero_pad_batch(batch, active_modalities, all_modalities):
 def main():
     parser = argparse.ArgumentParser(description="Cross-modality portability tests")
     parser.add_argument("--config", type=str, default="full",
-                        choices=["default", "dev", "full"])
+                        choices=["default", "dev", "full", "tuned"])
     parser.add_argument("--checkpoint", type=str, default=None,
                         help="Path to 4ch model checkpoint (auto-detected if not set)")
     parser.add_argument("--split", type=str, default="val", choices=["val", "test"])
