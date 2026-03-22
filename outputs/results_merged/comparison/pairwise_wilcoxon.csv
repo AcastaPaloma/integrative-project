@@ -1,4 +1,13 @@
 Model A,Model B,Mean A,Mean B,Mean Diff,Statistic,p-value,Significant,Interpretation
+cnn_4ch,unet_3ch_no_t1,0.5921,0.7802,-0.1881,13.00,0.000000,True,unet_3ch_no_t1 is significantly better (p=0.0000)
+cnn_4ch,unet_4ch,0.5921,0.7726,-0.1805,21.00,0.000000,True,unet_4ch is significantly better (p=0.0000)
+cnn_4ch,unet_flair,0.5921,0.5946,-0.0025,663.00,0.369983,False,No significant difference (p=0.3700)
+cnn_4ch,unet_flair_t1ce,0.5921,0.7725,-0.1804,17.00,0.000000,True,unet_flair_t1ce is significantly better (p=0.0000)
+cnn_4ch,unet_flair_t2,0.5921,0.6235,-0.0314,445.00,0.006469,True,unet_flair_t2 is significantly better (p=0.0065)
+cnn_4ch,unet_t1,0.5921,0.5314,0.0607,390.00,0.001453,True,cnn_4ch is significantly better (p=0.0015)
+cnn_4ch,unet_t1_t1ce,0.5921,0.6698,-0.0777,352.00,0.000461,True,unet_t1_t1ce is significantly better (p=0.0005)
+cnn_4ch,unet_t1ce,0.5921,0.7232,-0.1311,156.00,0.000000,True,unet_t1ce is significantly better (p=0.0000)
+cnn_4ch,unet_t2,0.5921,0.6111,-0.0190,542.00,0.056093,False,No significant difference (p=0.0561)
 unet_3ch_no_t1,unet_4ch,0.7802,0.7726,0.0075,730.00,0.737518,False,No significant difference (p=0.7375)
 unet_3ch_no_t1,unet_flair,0.7802,0.5946,0.1856,21.00,0.000000,True,unet_3ch_no_t1 is significantly better (p=0.0000)
 unet_3ch_no_t1,unet_flair_t1ce,0.7802,0.7725,0.0077,619.00,0.205814,False,No significant difference (p=0.2058)

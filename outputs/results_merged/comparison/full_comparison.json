@@ -1,5 +1,6 @@
 {
   "models": [
+    "cnn_4ch",
     "unet_3ch_no_t1",
     "unet_4ch",
     "unet_flair",
@@ -11,6 +12,132 @@
     "unet_t2"
   ],
   "pairwise_wilcoxon": [
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_3ch_no_t1",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.7801738456032288,
+      "mean_difference": -0.18805604985041507,
+      "median_difference": -0.18987542645954525,
+      "statistic": 13.0,
+      "p_value": 2.2597668758059175e-10,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_4ch",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.7726293297068855,
+      "mean_difference": -0.18051153395407185,
+      "median_difference": -0.17088204660445816,
+      "statistic": 21.0,
+      "p_value": 3.484394298247146e-10,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.5945691649862708,
+      "mean_difference": -0.0024513692334572693,
+      "median_difference": -0.014072720419733509,
+      "statistic": 663.0,
+      "p_value": 0.36998329308598255,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.3700)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t1ce",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.7724812010812928,
+      "mean_difference": -0.18036340532847908,
+      "median_difference": -0.18323574033213585,
+      "statistic": 17.0,
+      "p_value": 2.807592075263607e-10,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t2",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.6234752859179529,
+      "mean_difference": -0.03135749016513924,
+      "median_difference": -0.05402776353110461,
+      "statistic": 445.0,
+      "p_value": 0.006468654188729904,
+      "significant": true,
+      "interpretation": "unet_flair_t2 is significantly better (p=0.0065)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.06072845035152659,
+      "median_difference": 0.0405377310890391,
+      "statistic": 390.0,
+      "p_value": 0.0014533114317329685,
+      "significant": true,
+      "interpretation": "cnn_4ch is significantly better (p=0.0015)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": -0.07770975332751176,
+      "median_difference": -0.10054772897772157,
+      "statistic": 352.0,
+      "p_value": 0.00046137568398767307,
+      "significant": true,
+      "interpretation": "unet_t1_t1ce is significantly better (p=0.0005)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": -0.13109115681607764,
+      "median_difference": -0.12937941715237855,
+      "statistic": 156.0,
+      "p_value": 2.6833627615948966e-07,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t2",
+      "mean_a": 0.5921177957528135,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": -0.019017560305526177,
+      "median_difference": -0.01293753697213601,
+      "statistic": 542.0,
+      "p_value": 0.05609344054422516,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.0561)",
+      "n_patients": 55
+    },
     {
       "test": "Wilcoxon signed-rank",
       "model_a": "unet_3ch_no_t1",
@@ -517,6 +644,44 @@
     }
   ],
   "bootstrap_ci": {
+    "cnn_4ch": {
+      "overall": {
+        "mean": 0.5921177957528135,
+        "std": 0.18047523172663282,
+        "ci_lower": 0.5435106083205992,
+        "ci_upper": 0.638639637232338,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.5471981406259178,
+        "std": 0.22204077773036227,
+        "ci_lower": 0.4894267849294016,
+        "ci_upper": 0.6055075846529904,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.7338336034716536,
+        "std": 0.24442480211828824,
+        "ci_lower": 0.66763236956398,
+        "ci_upper": 0.7970258858586842,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.49532164316086924,
+        "std": 0.2861555704959474,
+        "ci_lower": 0.41779710526811087,
+        "ci_upper": 0.5707504811531728,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
     "unet_3ch_no_t1": {
       "overall": {
         "mean": 0.7801738456032288,
@@ -862,6 +1027,69 @@
   },
   "effect_sizes": [
     {
+      "cohens_d": -1.4929917105330572,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-1.493)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_3ch_no_t1"
+    },
+    {
+      "cohens_d": -1.5179705839973692,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-1.518)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_4ch"
+    },
+    {
+      "cohens_d": -0.02014126541324257,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=-0.020)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair"
+    },
+    {
+      "cohens_d": -1.5470534196994314,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-1.547)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "cohens_d": -0.33250150306199516,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=-0.333)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "cohens_d": 0.4408359318106628,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=0.441)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": -0.5314221436444582,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=-0.531)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": -0.8160045665775544,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-0.816)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": -0.18426459815870253,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=-0.184)",
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t2"
+    },
+    {
       "cohens_d": 0.12713865674750036,
       "magnitude": "negligible",
       "interpretation": "negligible effect size (d=0.127)",
@@ -1115,6 +1343,159 @@
     }
   ],
   "mcnemar": [
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 10,
+        "both_fail": 3
+      },
+      "statistic": 0.0,
+      "p_value": 0.001953125,
+      "significant": true,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.054545454545454564,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_3ch_no_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 8,
+        "both_fail": 5
+      },
+      "statistic": 0.0,
+      "p_value": 0.0078125,
+      "significant": true,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.09090909090909094,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_4ch"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 39,
+        "a_success_b_fail": 3,
+        "a_fail_b_success": 4,
+        "both_fail": 9
+      },
+      "statistic": 3.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.21818181818181814,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 10,
+        "both_fail": 3
+      },
+      "statistic": 0.0,
+      "p_value": 0.001953125,
+      "significant": true,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.054545454545454564,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 40,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 4,
+        "both_fail": 9
+      },
+      "statistic": 2.0,
+      "p_value": 0.6875,
+      "significant": false,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.19999999999999996,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 34,
+        "a_success_b_fail": 8,
+        "a_fail_b_success": 1,
+        "both_fail": 12
+      },
+      "statistic": 8.0,
+      "p_value": 0.0390625,
+      "significant": true,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 4,
+        "both_fail": 9
+      },
+      "statistic": 0.0,
+      "p_value": 0.125,
+      "significant": false,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 38,
+        "a_success_b_fail": 4,
+        "a_fail_b_success": 7,
+        "both_fail": 6
+      },
+      "statistic": 4.0,
+      "p_value": 0.548828125,
+      "significant": false,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 38,
+        "a_success_b_fail": 4,
+        "a_fail_b_success": 3,
+        "both_fail": 10
+      },
+      "statistic": 4.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.23636363636363633,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "cnn_4ch",
+      "model_b": "unet_t2"
+    },
     {
       "test": "McNemar",
       "threshold": 0.5,
@@ -1730,50 +2111,55 @@
   ],
   "friedman": {
     "test": "Friedman",
-    "statistic": 282.88528564934074,
-    "p_value": 1.7991776296242416e-56,
+    "statistic": 308.1304826978182,
+    "p_value": 4.915318993461849e-61,
     "significant": true,
-    "n_models": 9,
+    "n_models": 10,
     "n_patients": 55,
     "rankings": [
       {
         "model": "unet_4ch",
-        "avg_rank": 2.2545454545454544
-      },
-      {
-        "model": "unet_3ch_no_t1",
         "avg_rank": 2.290909090909091
       },
       {
+        "model": "unet_3ch_no_t1",
+        "avg_rank": 2.309090909090909
+      },
+      {
         "model": "unet_flair_t1ce",
-        "avg_rank": 2.5636363636363635
+        "avg_rank": 2.6
       },
       {
         "model": "unet_t1ce",
-        "avg_rank": 4.536363636363636
+        "avg_rank": 4.718181818181818
       },
       {
         "model": "unet_t1_t1ce",
-        "avg_rank": 5.754545454545455
+        "avg_rank": 6.0636363636363635
       },
       {
         "model": "unet_flair_t2",
-        "avg_rank": 5.927272727272728
+        "avg_rank": 6.254545454545455
       },
       {
         "model": "unet_t2",
-        "avg_rank": 6.618181818181818
+        "avg_rank": 6.963636363636364
       },
       {
         "model": "unet_flair",
-        "avg_rank": 6.927272727272728
+        "avg_rank": 7.345454545454546
+      },
+      {
+        "model": "cnn_4ch",
+        "avg_rank": 7.709090909090909
       },
       {
         "model": "unet_t1",
-        "avg_rank": 8.127272727272727
+        "avg_rank": 8.745454545454546
       }
     ],
     "model_means": {
+      "cnn_4ch": 0.5921177957528135,
       "unet_3ch_no_t1": 0.7801738456032288,
       "unet_4ch": 0.7726293297068855,
       "unet_flair": 0.5945691649862708,

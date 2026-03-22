@@ -1,4 +1,13 @@
 Model A,Model B,Cohen's d,Magnitude
+cnn_4ch,unet_3ch_no_t1,-1.4930,large
+cnn_4ch,unet_4ch,-1.5180,large
+cnn_4ch,unet_flair,-0.0201,negligible
+cnn_4ch,unet_flair_t1ce,-1.5471,large
+cnn_4ch,unet_flair_t2,-0.3325,small
+cnn_4ch,unet_t1,0.4408,small
+cnn_4ch,unet_t1_t1ce,-0.5314,medium
+cnn_4ch,unet_t1ce,-0.8160,large
+cnn_4ch,unet_t2,-0.1843,negligible
 unet_3ch_no_t1,unet_4ch,0.1271,negligible
 unet_3ch_no_t1,unet_flair,1.4456,large
 unet_3ch_no_t1,unet_flair_t1ce,0.1404,negligible
