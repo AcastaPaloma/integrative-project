@@ -1,0 +1,1788 @@
+{
+  "models": [
+    "unet_3ch_no_t1",
+    "unet_4ch",
+    "unet_flair",
+    "unet_flair_t1ce",
+    "unet_flair_t2",
+    "unet_t1",
+    "unet_t1_t1ce",
+    "unet_t1ce",
+    "unet_t2"
+  ],
+  "pairwise_wilcoxon": [
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_4ch",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.7726293297068855,
+      "mean_difference": 0.007544515896343124,
+      "median_difference": -0.0005076947050088876,
+      "statistic": 730.0,
+      "p_value": 0.7375180254455006,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.7375)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.5945691649862708,
+      "mean_difference": 0.18560468061695776,
+      "median_difference": 0.18352620316218915,
+      "statistic": 21.0,
+      "p_value": 3.484394298247146e-10,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t1ce",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.7724812010812928,
+      "mean_difference": 0.0076926445219359044,
+      "median_difference": 0.0028326863824696957,
+      "statistic": 619.0,
+      "p_value": 0.20581369835602792,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.2058)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t2",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.6234752859179529,
+      "mean_difference": 0.15669855968527577,
+      "median_difference": 0.1462550377148285,
+      "statistic": 28.0,
+      "p_value": 5.071283257548687e-10,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.24878450020194162,
+      "median_difference": 0.22577555299277263,
+      "statistic": 0.0,
+      "p_value": 1.1076151546135735e-10,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": 0.11034629652290324,
+      "median_difference": 0.08932769748182368,
+      "statistic": 51.0,
+      "p_value": 1.69973152848348e-09,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": 0.05696489303433737,
+      "median_difference": 0.054458980064666096,
+      "statistic": 197.0,
+      "p_value": 1.579477233833106e-06,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t2",
+      "mean_a": 0.7801738456032288,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.16903848954488884,
+      "median_difference": 0.16848936965300176,
+      "statistic": 30.0,
+      "p_value": 5.641808993127737e-10,
+      "significant": true,
+      "interpretation": "unet_3ch_no_t1 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.5945691649862708,
+      "mean_difference": 0.17806016472061462,
+      "median_difference": 0.16889466767023198,
+      "statistic": 13.0,
+      "p_value": 2.2597668758059175e-10,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t1ce",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.7724812010812928,
+      "mean_difference": 0.00014812862559278152,
+      "median_difference": 0.0029572961896279226,
+      "statistic": 680.0,
+      "p_value": 0.4508075868857597,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.4508)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t2",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.6234752859179529,
+      "mean_difference": 0.14915404378893266,
+      "median_difference": 0.1458945128641217,
+      "statistic": 36.0,
+      "p_value": 7.755411310502966e-10,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.24123998430559845,
+      "median_difference": 0.22194063808011705,
+      "statistic": 0.0,
+      "p_value": 1.1076151546135735e-10,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": 0.10280178062656012,
+      "median_difference": 0.0616846153488233,
+      "statistic": 61.0,
+      "p_value": 2.843436134161623e-09,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": 0.04942037713799424,
+      "median_difference": 0.041827696656675295,
+      "statistic": 242.0,
+      "p_value": 9.694681862782456e-06,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t2",
+      "mean_a": 0.7726293297068855,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.16149397364854567,
+      "median_difference": 0.15933421872060094,
+      "statistic": 56.0,
+      "p_value": 2.200309678741569e-09,
+      "significant": true,
+      "interpretation": "unet_4ch is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t1ce",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.7724812010812928,
+      "mean_difference": -0.1779120360950218,
+      "median_difference": -0.17233843013570516,
+      "statistic": 18.0,
+      "p_value": 2.963650948201326e-10,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t2",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.6234752859179529,
+      "mean_difference": -0.028906120931681968,
+      "median_difference": -0.02539052700895722,
+      "statistic": 384.0,
+      "p_value": 0.0012201834183543756,
+      "significant": true,
+      "interpretation": "unet_flair_t2 is significantly better (p=0.0012)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.06317981958498384,
+      "median_difference": 0.05549473859871812,
+      "statistic": 320.0,
+      "p_value": 0.00016302091901514526,
+      "significant": true,
+      "interpretation": "unet_flair is significantly better (p=0.0002)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": -0.07525838409405448,
+      "median_difference": -0.07883666423866609,
+      "statistic": 321.0,
+      "p_value": 0.00016858152046870625,
+      "significant": true,
+      "interpretation": "unet_t1_t1ce is significantly better (p=0.0002)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": -0.12863978758262035,
+      "median_difference": -0.13500353295629297,
+      "statistic": 163.0,
+      "p_value": 3.6612063148948426e-07,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair",
+      "model_b": "unet_t2",
+      "mean_a": 0.5945691649862708,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": -0.016566191072068904,
+      "median_difference": -0.01680430520195253,
+      "statistic": 617.0,
+      "p_value": 0.1998714560867738,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.1999)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_flair_t2",
+      "mean_a": 0.7724812010812928,
+      "mean_b": 0.6234752859179529,
+      "mean_difference": 0.14900591516333983,
+      "median_difference": 0.13500339781383158,
+      "statistic": 26.0,
+      "p_value": 4.5572007300236066e-10,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1",
+      "mean_a": 0.7724812010812928,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.24109185568000568,
+      "median_difference": 0.20964724183447847,
+      "statistic": 0.0,
+      "p_value": 1.1076151546135735e-10,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.7724812010812928,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": 0.10265365200096734,
+      "median_difference": 0.07326364681558817,
+      "statistic": 66.0,
+      "p_value": 3.668255376738735e-09,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.7724812010812928,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": 0.04927224851240147,
+      "median_difference": 0.04184453763381757,
+      "statistic": 194.0,
+      "p_value": 1.3927191113816006e-06,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t2",
+      "mean_a": 0.7724812010812928,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.16134584502295293,
+      "median_difference": 0.15896155985364424,
+      "statistic": 54.0,
+      "p_value": 1.984868261336004e-09,
+      "significant": true,
+      "interpretation": "unet_flair_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1",
+      "mean_a": 0.6234752859179529,
+      "mean_b": 0.5313893454012871,
+      "mean_difference": 0.09208594051666581,
+      "median_difference": 0.06708810877905391,
+      "statistic": 142.0,
+      "p_value": 1.4270756190446216e-07,
+      "significant": true,
+      "interpretation": "unet_flair_t2 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.6234752859179529,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": -0.046352263162372516,
+      "median_difference": -0.047047597724101275,
+      "statistic": 469.0,
+      "p_value": 0.011670861366817555,
+      "significant": true,
+      "interpretation": "unet_t1_t1ce is significantly better (p=0.0117)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.6234752859179529,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": -0.0997336666509384,
+      "median_difference": -0.10446375903047767,
+      "statistic": 220.0,
+      "p_value": 4.061669123084236e-06,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t2",
+      "mean_a": 0.6234752859179529,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.012339929859613064,
+      "median_difference": 0.011139361587723107,
+      "statistic": 570.0,
+      "p_value": 0.09379508006318721,
+      "significant": false,
+      "interpretation": "No significant difference (p=0.0938)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1",
+      "model_b": "unet_t1_t1ce",
+      "mean_a": 0.5313893454012871,
+      "mean_b": 0.6698275490803254,
+      "mean_difference": -0.1384382036790383,
+      "median_difference": -0.13019565615911743,
+      "statistic": 127.0,
+      "p_value": 7.148163916390145e-08,
+      "significant": true,
+      "interpretation": "unet_t1_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.5313893454012871,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": -0.19181960716760418,
+      "median_difference": -0.19018419964743283,
+      "statistic": 19.0,
+      "p_value": 3.128169521375046e-10,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1",
+      "model_b": "unet_t2",
+      "mean_a": 0.5313893454012871,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": -0.07974601065705275,
+      "median_difference": -0.06446616162177277,
+      "statistic": 232.0,
+      "p_value": 6.554682680459654e-06,
+      "significant": true,
+      "interpretation": "unet_t2 is significantly better (p=0.0000)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t1ce",
+      "mean_a": 0.6698275490803254,
+      "mean_b": 0.7232089525688911,
+      "mean_difference": -0.05338140348856586,
+      "median_difference": -0.027468273838256452,
+      "statistic": 392.0,
+      "p_value": 0.0025454849706575454,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0025)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t2",
+      "mean_a": 0.6698275490803254,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.05869219302198559,
+      "median_difference": 0.057597181182417856,
+      "statistic": 412.0,
+      "p_value": 0.002704051384140554,
+      "significant": true,
+      "interpretation": "unet_t1_t1ce is significantly better (p=0.0027)",
+      "n_patients": 55
+    },
+    {
+      "test": "Wilcoxon signed-rank",
+      "model_a": "unet_t1ce",
+      "model_b": "unet_t2",
+      "mean_a": 0.7232089525688911,
+      "mean_b": 0.6111353560583396,
+      "mean_difference": 0.11207359651055143,
+      "median_difference": 0.11398391672759234,
+      "statistic": 178.0,
+      "p_value": 7.045670284362297e-07,
+      "significant": true,
+      "interpretation": "unet_t1ce is significantly better (p=0.0000)",
+      "n_patients": 55
+    }
+  ],
+  "bootstrap_ci": {
+    "unet_3ch_no_t1": {
+      "overall": {
+        "mean": 0.7801738456032288,
+        "std": 0.18961425693791994,
+        "ci_lower": 0.7277543132333668,
+        "ci_upper": 0.8284697337620035,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.862929986805626,
+        "std": 0.12002198594156589,
+        "ci_lower": 0.8287108459543495,
+        "ci_upper": 0.892110910616227,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.7945291684317479,
+        "std": 0.2346422991165059,
+        "ci_lower": 0.7297845977338111,
+        "ci_upper": 0.8537223631362585,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.6830623815723116,
+        "std": 0.3102609230752685,
+        "ci_lower": 0.5980024408528664,
+        "ci_upper": 0.7622044546844051,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_4ch": {
+      "overall": {
+        "mean": 0.7726293297068855,
+        "std": 0.1948419400220579,
+        "ci_lower": 0.7191475586184325,
+        "ci_upper": 0.8220137363792344,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.8582896891219463,
+        "std": 0.12102324211155553,
+        "ci_lower": 0.8241443373109708,
+        "ci_upper": 0.8873847088880272,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.7813519735953689,
+        "std": 0.2558514358377055,
+        "ci_lower": 0.7104211278214398,
+        "ci_upper": 0.8468644626436254,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.6782463264033411,
+        "std": 0.32165229051163147,
+        "ci_lower": 0.5901031578109558,
+        "ci_upper": 0.7601486738860921,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_flair": {
+      "overall": {
+        "mean": 0.5945691649862708,
+        "std": 0.17758680019916923,
+        "ci_lower": 0.5471135092209686,
+        "ci_upper": 0.6401373249518497,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.8216632913532071,
+        "std": 0.1430820756463248,
+        "ci_lower": 0.7815730429199018,
+        "ci_upper": 0.856656256717146,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.5968168551976801,
+        "std": 0.24488210694935664,
+        "ci_lower": 0.5300516550561029,
+        "ci_upper": 0.6601952399880701,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.3652273484079254,
+        "std": 0.23274077576555213,
+        "ci_lower": 0.30360989827996443,
+        "ci_upper": 0.4249167945675963,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_flair_t1ce": {
+      "overall": {
+        "mean": 0.7724812010812928,
+        "std": 0.1850686641516922,
+        "ci_lower": 0.7213933972520058,
+        "ci_upper": 0.8198470549028797,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.8603858224365901,
+        "std": 0.10867240543390745,
+        "ci_lower": 0.8297176348533665,
+        "ci_upper": 0.8868906990063529,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.7815459575373938,
+        "std": 0.24467551552640826,
+        "ci_lower": 0.7143550285599557,
+        "ci_upper": 0.8435533230354729,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.6755118232698943,
+        "std": 0.3124950336746484,
+        "ci_lower": 0.5893267558637953,
+        "ci_upper": 0.7554899998022215,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_flair_t2": {
+      "overall": {
+        "mean": 0.6234752859179529,
+        "std": 0.15785368892963975,
+        "ci_lower": 0.5810453117657076,
+        "ci_upper": 0.6647375666657721,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.8591150334953799,
+        "std": 0.10903924955597788,
+        "ci_lower": 0.8288358137808756,
+        "ci_upper": 0.8860251120393348,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.6336716168338615,
+        "std": 0.23243945032977661,
+        "ci_lower": 0.5706515835494355,
+        "ci_upper": 0.6942103548909339,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.37763920742461693,
+        "std": 0.23327180017769467,
+        "ci_lower": 0.3172121077590054,
+        "ci_upper": 0.43800139534266525,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_t1": {
+      "overall": {
+        "mean": 0.5313893454012871,
+        "std": 0.19107718716574043,
+        "ci_lower": 0.48093246118010496,
+        "ci_upper": 0.5810069979355167,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.6453593794508353,
+        "std": 0.18506716150703095,
+        "ci_lower": 0.5948338386762483,
+        "ci_upper": 0.6917006895135351,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.5912785016246778,
+        "std": 0.26182415025869443,
+        "ci_lower": 0.5212202181902055,
+        "ci_upper": 0.6595253744087622,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.3575301551283476,
+        "std": 0.23071323127052182,
+        "ci_lower": 0.29648858250697796,
+        "ci_upper": 0.41736601984144867,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_t1_t1ce": {
+      "overall": {
+        "mean": 0.6698275490803254,
+        "std": 0.1968464543749883,
+        "ci_lower": 0.6164479741887813,
+        "ci_upper": 0.719847459306262,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.6560579287029379,
+        "std": 0.18169013210302776,
+        "ci_lower": 0.6062301097527221,
+        "ci_upper": 0.7025691785382655,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.675338989342604,
+        "std": 0.263038657116264,
+        "ci_lower": 0.6048539797894498,
+        "ci_upper": 0.7426549924680038,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.678085729195434,
+        "std": 0.3164917594897487,
+        "ci_lower": 0.5906593181370612,
+        "ci_upper": 0.7574544891854035,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_t1ce": {
+      "overall": {
+        "mean": 0.7232089525688911,
+        "std": 0.1946215352073582,
+        "ci_lower": 0.6696831043444044,
+        "ci_upper": 0.7727755402210227,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.6997459113623532,
+        "std": 0.20744379650258524,
+        "ci_lower": 0.6431881566245072,
+        "ci_upper": 0.7520331884593067,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.779315001765927,
+        "std": 0.2326126635140714,
+        "ci_lower": 0.7137580177784866,
+        "ci_upper": 0.8371809466628138,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.6905659445783933,
+        "std": 0.30047685346055947,
+        "ci_lower": 0.6065219468424917,
+        "ci_upper": 0.7653666680670507,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    },
+    "unet_t2": {
+      "overall": {
+        "mean": 0.6111353560583396,
+        "std": 0.17359294883819654,
+        "ci_lower": 0.5645383487074326,
+        "ci_upper": 0.6566581469235266,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "WT": {
+        "mean": 0.7749450109792041,
+        "std": 0.13745049803497894,
+        "ci_lower": 0.737349687603426,
+        "ci_upper": 0.8095400511494449,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "TC": {
+        "mean": 0.6525734801242727,
+        "std": 0.23535504506410115,
+        "ci_lower": 0.5893979661966312,
+        "ci_upper": 0.7139597735265164,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      },
+      "ET": {
+        "mean": 0.40588757707154255,
+        "std": 0.24978526472573462,
+        "ci_lower": 0.33993908178264215,
+        "ci_upper": 0.4710631064428282,
+        "confidence": 0.95,
+        "n_bootstrap": 10000,
+        "n_patients": 55
+      }
+    }
+  },
+  "effect_sizes": [
+    {
+      "cohens_d": 0.12713865674750036,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=0.127)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_4ch"
+    },
+    {
+      "cohens_d": 1.4455777203984082,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.446)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair"
+    },
+    {
+      "cohens_d": 0.14039642334678862,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=0.140)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "cohens_d": 1.4113681157424705,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.411)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "cohens_d": 1.996377112609006,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.996)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": 1.0885065982724729,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.089)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": 0.6950238272725435,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=0.695)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": 1.4150028562308876,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.415)",
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": 1.439408968468877,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.439)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair"
+    },
+    {
+      "cohens_d": 0.0024406878703832464,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=0.002)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "cohens_d": 1.2937960626404208,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.294)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "cohens_d": 1.9059379534655914,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.906)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": 0.9886593147487175,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=0.989)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": 0.4985508071238763,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=0.499)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": 1.2238955374477498,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.224)",
+      "model_a": "unet_4ch",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": -1.3935330418460525,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-1.394)",
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "cohens_d": -0.337705050682895,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=-0.338)",
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "cohens_d": 0.43684828400851133,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=0.437)",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": -0.5271645277051238,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=-0.527)",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": -0.8305093420975818,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-0.831)",
+      "model_a": "unet_flair",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": -0.12806981507499224,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=-0.128)",
+      "model_a": "unet_flair",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": 1.309449760950004,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.309)",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "cohens_d": 1.9126397994542592,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.913)",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": 1.0108984600128832,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.011)",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": 0.5625722492873627,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=0.563)",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": 1.2286270776318373,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=1.229)",
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": 0.7428401437706417,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=0.743)",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1"
+    },
+    {
+      "cohens_d": -0.3503692676187699,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=-0.350)",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": -0.7025087909286737,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=-0.703)",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": 0.16584320663300822,
+      "magnitude": "negligible",
+      "interpretation": "negligible effect size (d=0.166)",
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": -0.9498562659186033,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-0.950)",
+      "model_a": "unet_t1",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "cohens_d": -1.4728483831435788,
+      "magnitude": "large",
+      "interpretation": "large effect size (d=-1.473)",
+      "model_a": "unet_t1",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": -0.5626417033870478,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=-0.563)",
+      "model_a": "unet_t1",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": -0.4611278735277677,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=-0.461)",
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "cohens_d": 0.42970027348196005,
+      "magnitude": "small",
+      "interpretation": "small effect size (d=0.430)",
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t2"
+    },
+    {
+      "cohens_d": 0.7748425924793167,
+      "magnitude": "medium",
+      "interpretation": "medium effect size (d=0.775)",
+      "model_a": "unet_t1ce",
+      "model_b": "unet_t2"
+    }
+  ],
+  "mcnemar": [
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 50,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 2.0,
+      "p_value": 0.5,
+      "significant": false,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.09090909090909094,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_4ch"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 43,
+        "a_success_b_fail": 9,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 9.0,
+      "p_value": 0.00390625,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.21818181818181814,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 52,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.054545454545454564,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 44,
+        "a_success_b_fail": 8,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 8.0,
+      "p_value": 0.0078125,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.19999999999999996,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 35,
+        "a_success_b_fail": 17,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 17.0,
+      "p_value": 1.52587890625e-05,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 46,
+        "a_success_b_fail": 6,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 6.0,
+      "p_value": 0.03125,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 45,
+        "a_success_b_fail": 7,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 7.0,
+      "p_value": 0.015625,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 11,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 11.0,
+      "p_value": 0.0009765625,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_3ch_no_t1",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 43,
+        "a_success_b_fail": 7,
+        "a_fail_b_success": 0,
+        "both_fail": 5
+      },
+      "statistic": 7.0,
+      "p_value": 0.015625,
+      "significant": true,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.21818181818181814,
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 50,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 2,
+        "both_fail": 3
+      },
+      "statistic": 0.0,
+      "p_value": 0.5,
+      "significant": false,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.054545454545454564,
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 44,
+        "a_success_b_fail": 6,
+        "a_fail_b_success": 0,
+        "both_fail": 5
+      },
+      "statistic": 6.0,
+      "p_value": 0.03125,
+      "significant": true,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.19999999999999996,
+      "model_a": "unet_4ch",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 35,
+        "a_success_b_fail": 15,
+        "a_fail_b_success": 0,
+        "both_fail": 5
+      },
+      "statistic": 15.0,
+      "p_value": 6.103515625e-05,
+      "significant": true,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 46,
+        "a_success_b_fail": 4,
+        "a_fail_b_success": 0,
+        "both_fail": 5
+      },
+      "statistic": 4.0,
+      "p_value": 0.125,
+      "significant": false,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 44,
+        "a_success_b_fail": 6,
+        "a_fail_b_success": 1,
+        "both_fail": 4
+      },
+      "statistic": 6.0,
+      "p_value": 0.125,
+      "significant": false,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_4ch",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 9,
+        "a_fail_b_success": 0,
+        "both_fail": 5
+      },
+      "statistic": 9.0,
+      "p_value": 0.00390625,
+      "significant": true,
+      "failure_rate_a": 0.09090909090909094,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_4ch",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 43,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 9,
+        "both_fail": 3
+      },
+      "statistic": 0.0,
+      "p_value": 0.00390625,
+      "significant": true,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.054545454545454564,
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 3,
+        "both_fail": 9
+      },
+      "statistic": 2.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.19999999999999996,
+      "model_a": "unet_flair",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 33,
+        "a_success_b_fail": 10,
+        "a_fail_b_success": 2,
+        "both_fail": 10
+      },
+      "statistic": 10.0,
+      "p_value": 0.03857421875,
+      "significant": true,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "unet_flair",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 5,
+        "both_fail": 7
+      },
+      "statistic": 2.0,
+      "p_value": 0.453125,
+      "significant": false,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_flair",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 39,
+        "a_success_b_fail": 4,
+        "a_fail_b_success": 6,
+        "both_fail": 6
+      },
+      "statistic": 4.0,
+      "p_value": 0.75390625,
+      "significant": false,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_flair",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 38,
+        "a_success_b_fail": 5,
+        "a_fail_b_success": 3,
+        "both_fail": 9
+      },
+      "statistic": 5.0,
+      "p_value": 0.7265625,
+      "significant": false,
+      "failure_rate_a": 0.21818181818181814,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_flair",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 44,
+        "a_success_b_fail": 8,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 8.0,
+      "p_value": 0.0078125,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.19999999999999996,
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_flair_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 35,
+        "a_success_b_fail": 17,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 17.0,
+      "p_value": 1.52587890625e-05,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 46,
+        "a_success_b_fail": 6,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 6.0,
+      "p_value": 0.03125,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 45,
+        "a_success_b_fail": 7,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 7.0,
+      "p_value": 0.015625,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 11,
+        "a_fail_b_success": 0,
+        "both_fail": 3
+      },
+      "statistic": 11.0,
+      "p_value": 0.0009765625,
+      "significant": true,
+      "failure_rate_a": 0.054545454545454564,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_flair_t1ce",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 34,
+        "a_success_b_fail": 10,
+        "a_fail_b_success": 1,
+        "both_fail": 10
+      },
+      "statistic": 10.0,
+      "p_value": 0.01171875,
+      "significant": true,
+      "failure_rate_a": 0.19999999999999996,
+      "failure_rate_b": 0.36363636363636365,
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 4,
+        "both_fail": 7
+      },
+      "statistic": 2.0,
+      "p_value": 0.6875,
+      "significant": false,
+      "failure_rate_a": 0.19999999999999996,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 39,
+        "a_success_b_fail": 5,
+        "a_fail_b_success": 6,
+        "both_fail": 5
+      },
+      "statistic": 5.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.19999999999999996,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 41,
+        "a_success_b_fail": 3,
+        "a_fail_b_success": 0,
+        "both_fail": 11
+      },
+      "statistic": 3.0,
+      "p_value": 0.25,
+      "significant": false,
+      "failure_rate_a": 0.19999999999999996,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_flair_t2",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 35,
+        "a_success_b_fail": 0,
+        "a_fail_b_success": 11,
+        "both_fail": 9
+      },
+      "statistic": 0.0,
+      "p_value": 0.0009765625,
+      "significant": true,
+      "failure_rate_a": 0.36363636363636365,
+      "failure_rate_b": 0.1636363636363637,
+      "model_a": "unet_t1",
+      "model_b": "unet_t1_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 33,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 12,
+        "both_fail": 8
+      },
+      "statistic": 2.0,
+      "p_value": 0.012939453125,
+      "significant": true,
+      "failure_rate_a": 0.36363636363636365,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_t1",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 33,
+        "a_success_b_fail": 2,
+        "a_fail_b_success": 8,
+        "both_fail": 12
+      },
+      "statistic": 2.0,
+      "p_value": 0.109375,
+      "significant": false,
+      "failure_rate_a": 0.36363636363636365,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_t1",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 42,
+        "a_success_b_fail": 4,
+        "a_fail_b_success": 3,
+        "both_fail": 6
+      },
+      "statistic": 4.0,
+      "p_value": 1.0,
+      "significant": false,
+      "failure_rate_a": 0.1636363636363637,
+      "failure_rate_b": 0.18181818181818177,
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t1ce"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 40,
+        "a_success_b_fail": 6,
+        "a_fail_b_success": 1,
+        "both_fail": 8
+      },
+      "statistic": 6.0,
+      "p_value": 0.125,
+      "significant": false,
+      "failure_rate_a": 0.1636363636363637,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_t1_t1ce",
+      "model_b": "unet_t2"
+    },
+    {
+      "test": "McNemar",
+      "threshold": 0.5,
+      "contingency": {
+        "both_success": 37,
+        "a_success_b_fail": 8,
+        "a_fail_b_success": 4,
+        "both_fail": 6
+      },
+      "statistic": 8.0,
+      "p_value": 0.3876953125,
+      "significant": false,
+      "failure_rate_a": 0.18181818181818177,
+      "failure_rate_b": 0.2545454545454545,
+      "model_a": "unet_t1ce",
+      "model_b": "unet_t2"
+    }
+  ],
+  "friedman": {
+    "test": "Friedman",
+    "statistic": 282.88528564934074,
+    "p_value": 1.7991776296242416e-56,
+    "significant": true,
+    "n_models": 9,
+    "n_patients": 55,
+    "rankings": [
+      {
+        "model": "unet_4ch",
+        "avg_rank": 2.2545454545454544
+      },
+      {
+        "model": "unet_3ch_no_t1",
+        "avg_rank": 2.290909090909091
+      },
+      {
+        "model": "unet_flair_t1ce",
+        "avg_rank": 2.5636363636363635
+      },
+      {
+        "model": "unet_t1ce",
+        "avg_rank": 4.536363636363636
+      },
+      {
+        "model": "unet_t1_t1ce",
+        "avg_rank": 5.754545454545455
+      },
+      {
+        "model": "unet_flair_t2",
+        "avg_rank": 5.927272727272728
+      },
+      {
+        "model": "unet_t2",
+        "avg_rank": 6.618181818181818
+      },
+      {
+        "model": "unet_flair",
+        "avg_rank": 6.927272727272728
+      },
+      {
+        "model": "unet_t1",
+        "avg_rank": 8.127272727272727
+      }
+    ],
+    "model_means": {
+      "unet_3ch_no_t1": 0.7801738456032288,
+      "unet_4ch": 0.7726293297068855,
+      "unet_flair": 0.5945691649862708,
+      "unet_flair_t1ce": 0.7724812010812928,
+      "unet_flair_t2": 0.6234752859179529,
+      "unet_t1": 0.5313893454012871,
+      "unet_t1_t1ce": 0.6698275490803254,
+      "unet_t1ce": 0.7232089525688911,
+      "unet_t2": 0.6111353560583396
+    }
+  }
+}
