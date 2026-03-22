@@ -231,7 +231,7 @@ def mcnemar_test(
     else:
         # Use exact binomial test for small samples
         if n_discordant < 25:
-            p_value = stats.binom_test(a_only, n_discordant, 0.5)
+            p_value = stats.binomtest(a_only, n_discordant, 0.5).pvalue
             statistic = float(a_only)
         else:
             # Chi-squared approximation with continuity correction

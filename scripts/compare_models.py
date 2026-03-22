@@ -184,9 +184,13 @@ def main():
             return float(obj)
         if isinstance(obj, np.integer):
             return int(obj)
+        if isinstance(obj, np.bool_):
+            return bool(obj)
         if isinstance(obj, np.ndarray):
             return obj.tolist()
-        return obj
+        if isinstance(obj, Path):
+            return str(obj)
+        raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
     with open(comparison_json_path, "w") as f:
         json.dump(comparison, f, indent=2, default=to_serializable)
